@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Bot Dashboard</title>
+<style>
+/* Minimal Tailwind-ish utility CSS */
+body { background:#0d0d0d; color:white; font-family:sans-serif; margin:0; }
+.flex { display:flex; }
+.col { flex-direction:column; }
+.center { justify-content:center; align-items:center; }
+.gap { gap:1rem; }
+.p2 { padding:1rem; }
+.p4 { padding:2rem; }
+.bg1 { background:#1a1a1a; }
+.bg2 { background:#222; }
+.btn { background:#6c2bd9; padding:.6rem 1rem; border-radius:6px; cursor:pointer; }
+.input { padding:.5rem; background:#111; border:1px solid #444; color:white; border-radius:4px; }
+.card { background:#141414; padding:1rem; border:1px solid #333; border-radius:6px; margin-bottom:.5rem; }
+.border { border:1px solid #333; }
+.round { border-radius:6px; }
+</style>
+
+<!-- React + ReactDOM via CDN -->
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+<!-- Drag & Drop -->
+<script src="https://unpkg.com/react-beautiful-dnd@13.1.1/dist/react-beautiful-dnd.js"></script>
+
+</head>
+<body>
+
+<div id="root"></div>
+
+<script>
+const API = "http://localhost:3000";
+
+// ========================
+// STATE HOOK
+// ========================
+const { useState, useEffect } = React;
+const { DragDropContext, Droppable, Draggable } = window.ReactBeautifulDnd;
+
+// ========================
+// LOGIN PAGE
+// ========================
+function LoginPage() {
+  const oauth = 
+    "https://discord.com/api/oauth2/authorize" +
+    "?client_id=YOUR_CLIENT_ID" +
+    "&redirect_uri=" + encodeURIComponent("http://localhost:5173/oauth/callback") +
+    "&response_type=code&scope=identify";
+
+  return (
+    React.createElement("div", { className:"flex col center p4 gap" },
+      React.createElement("h1", null, "Bot Dashboard"),
+      React.createElement("a", { href: oauth, className:"btn" }, "Login with Discord")
+    )
+  );
+}
+
+// ========================
+// NAVBAR
+// ========================
+function Navbar({ setPage }) {
+  return (
+    React.createElement("div", { className:"flex gap bg1 p2" },
+      ["dashboard","commands","updates","changelog","webhooks","dbstatus"].map(pg =>
+        React.createElement("div", {
+          key:pg,
+          className:"btn",
+          onClick:()=>setPage(pg)
+        }, pg)
+      )
+    )
+  );
+}
+
+// ========================
+// DRAG & DROP COMMAND EDITOR
+// ========================
+function CommandEditor() {
+  const [items, setItems] = useState([]);
+  const [cmdName, setCmdName] = useState("");
+
+  function onDragEnd(result) {
+    if (!result.destination) return;
+    const copy = Array.from(items);
+    const [moved] = copy.splice(result.source.index, 1);
+    copy.splice(result.destination.index, 0, moved);
+    setItems(copy);
+  }
+
+  async function save() {
+    const payload = { structure: items };
+    await fetch(API + "/commands", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({
+        name:cmdName,
+        description:"Custom command",
+        payload
+      })
+    });
+    alert("Command saved");
+  }
+
+  return (
+    React.createElement("div", { className:"flex gap p2" },
+
+      // LEFT panel
+      React.createElement("div", { style:{width:"50%"} },
+        React.createElement("h2", null, "Drag & Drop Command Builder"),
+
+        React.createElement("input", {
+          className:"input p2",
+          placeholder:"Command name",
+          value:cmdName,
+          onChange:e=>setCmdName(e.target.value)
+        }),
+
+        React.createElement(DragDropContext, { onDragEnd },
+          React.createElement(Droppable, { droppableId:"list" }, provided =>
+            React.createElement("div", {
+              className:"p2 bg2 round",
+              ref:provided.innerRef,
+              ...provided.droppableProps
+            },
+              items.map((x, i) =>
+                React.createElement(Draggable, { key:x.id, draggableId:x.id, index:i },
+                  provided2 =>
+                    React.createElement("div", {
+                      className:"card",
+                      ref:provided2.innerRef,
+                      ...provided2.draggableProps,
+                      ...provided2.dragHandleProps
+                    }, x.label)
+                )
+              ),
+              provided.placeholder
+            )
+          )
+        ),
+
+        React.createElement("button", {
+          className:"btn",
+          onClick:()=>setItems([...items, { id:crypto.randomUUID(), label:"New Option" }])
+        }, "Add Option"),
+
+        React.createElement("button", { className:"btn", style:{marginLeft:"1rem"}, onClick:save },
+          "Save Command"
+        )
+      ),
+
+      // RIGHT panel - JSON preview
+      React.createElement("div", { style:{width:"50%"} },
+        React.createElement("h2", null, "JSON Preview"),
+        React.createElement("pre", { className:"bg1 p2 round", style:{height:"100%",overflow:"auto"} },
+          JSON.stringify({name:cmdName,options:items}, null, 2)
+        )
+      )
+    )
+  );
+}
+
+// ========================
+// COMMANDS PAGE
+// ========================
+function CommandsPage() {
+  return (
+    React.createElement("div", { className:"p2" },
+      React.createElement(CommandEditor, null)
+    )
+  );
+}
+
+// ========================
+// DASHBOARD ROOT
+// ========================
+function Dashboard() {
+  const [page, setPage] = useState("dashboard");
+
+  return (
+    React.createElement("div", null,
+      React.createElement(Navbar, { setPage }),
+      page === "commands" ? React.createElement(CommandsPage) :
+      React.createElement("div", { className:"p4" }, "Select a section")
+    )
+  );
+}
+
+// ========================
+// ROOT APP
+// ========================
+function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(()=>{
+    fetch(API+"/auth/me",{credentials:"include"})
+      .then(r=>r.json())
+      .then(d=>{ if(!d.error) setUser(d); });
+  },[]);
+
+  if (!user) return React.createElement(LoginPage);
+  return React.createElement(Dashboard);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+
+</body>
+</html>
