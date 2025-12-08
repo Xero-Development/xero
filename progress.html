@@ -102,7 +102,7 @@
     <script>
       async function loadProgress() {
         try {
-          const res = await fetch("https://raw.githubusercontent.com/Xero-Development/The-X-Project/data/progress.json");
+          const res = await fetch("https://github.com/Xero-Development/The-X-Project/blob/11b289848f5bebf5e1f94bd164f9bb8ff5bd5b3d/data/progress.json");
           const data = await res.json();
 
           document.getElementById("currentProgress").innerHTML = `
