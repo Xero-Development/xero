@@ -24,7 +24,7 @@
 </main>
 
 <script type="module">
-  import { createClient } from "@supabase/supabase-js";
+  const {createClient} = require("@supabase/superbase-js")
 
   const supabase = createClient(
     "https://ekdezhpqwgkrdrmyaqtv.supabase.co",
