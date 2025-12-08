@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The X Project | Progress</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
 
   <style>
     body { background:#111; color:#eee; font-family:Arial; margin:0; }
@@ -24,37 +23,21 @@
   <div class="card" id="progress">Loading…</div>
 </main>
 
-<script type="module">
-const supabaseUrl = 'https://qopgwxlrdqjyamerllwz.supabase.co'
-  const suapaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvcGd3eGxyZHFqeWFtZXJsbHd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMjU1MDUsImV4cCI6MjA4MDgwMTUwNX0.Zrc1hRt4SZgQIdNupFUJh6Pxf6wuf8i08tw37Utd0OU'
- const supabase = createClient(supabaseUrl, supabaseKey)
-  async function loadProgress() {
- 
-    const { data, error } = await supabase
-      .from("xproject_progress")
-      .select("*")
-      .order("updated_at", { ascending: false })
-      .limit(1);
+<script>
+async function loadProgress() {
+  const req = await fetch("http://24.3.0.40:3001/");
+  const data = await req.json();
 
-    const box = document.getElementById("progress");
+  document.getElementById("progress").innerHTML = `
+    <h2>${data.version}</h2>
+    <p>${data.message}</p>
+  `;
+}
 
-    if (error || !data.length) {
-      box.innerHTML = "Error loading progress.";
-      return;
-    }
-
-    const p = data[0];
-
-    box.innerHTML = `
-      <h2>${p.version}</h2>
-      <p>${p.message}</p>
-      <small>Updated: ${new Date(p.updated_at).toLocaleString()}</small>
-    `;
-  }
-
-  loadProgress();
-  setInterval(loadProgress, 10000);
+loadProgress();
+setInterval(loadProgress, 10000);
 </script>
+
 
 
 </body>
