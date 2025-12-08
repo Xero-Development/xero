@@ -4,54 +4,130 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The X Project | Progress</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #111;
       color: #eee;
       margin: 0;
+      padding: 0;
     }
+
     header {
       background: #202020;
       padding: 2rem;
       text-align: center;
     }
+
+    h1 {
+      margin: 0;
+      font-size: 2.4rem;
+    }
+
     main {
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
       padding: 2rem;
+      line-height: 1.6;
     }
-    .panel {
-      background: #1a1a1a;
-      padding: 1rem;
-      margin-bottom: 1.2rem;
+
+    .card {
+      background: #1b1b1b;
+      padding: 1.4rem;
       border-radius: 6px;
       border: 1px solid #333;
+      margin-bottom: 1.5rem;
+    }
+
+    .status {
+      font-size: 1.2rem;
+      padding: 0.5rem 0;
+    }
+
+    ul {
+      margin-left: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      background: #202020;
+      padding: 1rem;
+      margin-top: 2rem;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      background: #333;
+      color: #eee;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background: #555;
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>The X Project</h1>
-    <p> Current Progress </p>
+    <p>Progress Tracker</p>
   </header>
-<div class="card" id="progressBox">
-  <h2>Loading progress...</h2>
-</div>
 
-<script>
-async function loadProgress() {
-  const res = await fetch("https://raw.githubusercontent.com/USERNAME/REPO/main/progress.json");
-  const data = await res.json();
+  <main>
+    <div class="card" id="currentProgress">
+      <h2>Loading progress...</h2>
+    </div>
 
-  document.getElementById("progressBox").innerHTML = `
-    <h2>Current Version</h2>
-    <p>${data.version} – ${data.message}</p>
-  `;
-}
-loadProgress();
-</script>
+    <div class="card">
+      <h2>Version Roadmap</h2>
+      <ul>
+        <li>v0.1 – Initial system install</li>
+        <li>v0.2 – Discord event simulation</li>
+        <li>v0.3 – Command handler & permission sandboxing</li>
+        <li>v0.4 – Plugin ecosystem</li>
+        <li>v1.0 – Stable release</li>
+      </ul>
+    </div>
+
+    <button class="btn" onclick="reloadProgress()">Reload Progress</button>
+
+    <script>
+      async function loadProgress() {
+        try {
+          const res = await fetch("https://raw.githubusercontent.com/USERNAME/REPO/main/progress.json");
+          const data = await res.json();
+
+          document.getElementById("currentProgress").innerHTML = `
+            <h2>Current Version</h2>
+            <p class="status">${data.version} – ${data.message}</p>
+          `;
+        } catch (err) {
+          document.getElementById("currentProgress").innerHTML = `
+            <h2>Error Loading Progress</h2>
+            <p>Make sure your progress.json file exists and is publicly accessible.</p>
+          `;
+        }
+      }
+
+      function reloadProgress() {
+        loadProgress();
+      }
+
+      loadProgress();
+    </script>
 
   </main>
+
+  <footer>
+    &copy; 2025 The X Project
+  </footer>
 </body>
 </html>
