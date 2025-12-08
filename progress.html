@@ -23,10 +23,12 @@
   <div class="card" id="progress">Loading…</div>
 </main>
 
-<script src="https://esm.sh/@supabase/supabase-js@2">
-  const supabase = supabase.createClient(
-    "https://ekdezhpqwgkrdrmyaqtv.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrZGV6aHBxd2drcmRybXlhcXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2NDYzMjMsImV4cCI6MjA4MDIyMjMyM30.ESPkAEoN8cwItqNbgBvDMm_J7OkDo1tSEUYZ9BD5-AY"
+<script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+  const supabase = createClient(
+    "https://ekdezhpqwgkrdrmyaqtv.supabase.coE",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrZGV6aHBxd2drcmRybXlhcXR2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDY0NjMyMywiZXhwIjoyMDgwMjIyMzIzfQ.IcrVl4q9gmJLrchZOQR7Q8mBzQek5aCgmqdPG6MqbtU"
   );
 
   async function loadProgress() {
@@ -55,6 +57,7 @@
   loadProgress();
   setInterval(loadProgress, 10000);
 </script>
+
 
 </body>
 </html>
