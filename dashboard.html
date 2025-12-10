@@ -35,83 +35,79 @@
     <h1>X Project Dashboard</h1>
   </header>
 
-<section id="manage-apps" style="padding:20px;">
-  <h2>Manage Apps</h2>
+<section id="dashboard" style="padding:20px;">
+  <h2>Dashboard</h2>
 
-  <div id="apps-list" style="display:flex;flex-direction:column;gap:15px;">
-    <!-- Apps rendered dynamically -->
-  </div>
-
-  <div style="margin-top:15px;">
-    <button id="refreshApps">Refresh Installed Apps</button>
+  <div id="dashboard-status" style="display:flex;flex-direction:column;gap:15px;">
+    Loading dashboard...
   </div>
 
   <script>
-    // Simulated API (replace with backend later)
-    async function getInstalledApps() {
-      // Dummy placeholder data for now
+    // Fetch latest GitHub release for version comparison
+    async function getLatestRelease() {
+      const url = "https://api.github.com/repos/Xero-Development/The-X-Project/releases/latest";
+      try {
+        const res = await fetch(url);
+        return await res.json();
+      } catch (err) {
+        console.error("Failed to fetch GitHub latest release:", err);
+        return null;
+      }
+    }
+
+    // Simulated installed apps (replace with backend later)
+    async function getInstalledAppsDashboard() {
       return [
-        { id: "app1", name: "X-Core", version: "1.2.0" },
-        { id: "app2", name: "X-Launcher", version: "0.9.4" }
+        { id: "xcore", name: "X-Core", version: "1.0.0" },
+        { id: "xlauncher", name: "X-Launcher", version: "0.9.4" }
       ];
     }
 
-    async function removeApp(appId) {
-      console.log("Removing app:", appId);
-      // Backend call goes here
-      return { success: true };
-    }
+    async function renderDashboard() {
+      const container = document.getElementById("dashboard-status");
+      container.innerHTML = "Loading...";
 
-    async function updateApp(appId, version = "latest") {
-      console.log("Updating app:", appId, "to version", version);
-      // Backend call goes here
-      return { success: true };
-    }
+      const latest = await getLatestRelease();
+      const apps = await getInstalledAppsDashboard();
 
-    async function renderApps() {
-      const apps = await getInstalledApps();
-      const container = document.getElementById("apps-list");
+      if (!latest) {
+        container.innerHTML = "Could not load GitHub release data.";
+        return;
+      }
 
-      container.innerHTML = "";
+      const latestTag = latest.tag_name || "unknown";
+
+      container.innerHTML = `
+        <div style="background:#1a1a1a;padding:15px;border-radius:8px;">
+          <h3>Latest GitHub Release</h3>
+          <p>Version: <strong>${latestTag}</strong></p>
+        </div>
+      `;
 
       apps.forEach(app => {
-        const item = document.createElement("div");
-        item.style.background = "#1a1a1a";
-        item.style.padding = "15px";
-        item.style.borderRadius = "8px";
-        item.style.color = "#fff";
+        const isOutdated = app.version !== latestTag;
 
-        item.innerHTML = `
+        const box = document.createElement("div");
+        box.style.background = "#1a1a1a";
+        box.style.padding = "15px";
+        box.style.borderRadius = "8px";
+
+        box.innerHTML = `
           <h3>${app.name}</h3>
           <p>Installed Version: ${app.version}</p>
-
-          <div>
-            <button class="update-btn" data-id="${app.id}">Update</button>
-            <button class="remove-btn" data-id="${app.id}">Remove</button>
-          </div>
+          <p>Latest Version: ${latestTag}</p>
+          <p>Status: 
+            <span style="color:${isOutdated ? "#ff4d4d" : "#4dff88"};">
+              ${isOutdated ? "Outdated" : "Up to date"}
+            </span>
+          </p>
         `;
 
-        container.appendChild(item);
-      });
-
-      document.querySelectorAll(".remove-btn").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          await removeApp(btn.dataset.id);
-          renderApps();
-        });
-      });
-
-      document.querySelectorAll(".update-btn").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          await updateApp(btn.dataset.id);
-          renderApps();
-        });
+        container.appendChild(box);
       });
     }
 
-    document.getElementById("refreshApps").addEventListener("click", renderApps);
-
-    renderApps();
+    renderDashboard();
   </script>
 </section>
 
