@@ -39,9 +39,9 @@
 
 
 
-  <button id="discordLoginBtn" style="padding:10px 15px; margin-bottom:20px;">
-    Login with Discord
-  </button>
+<button id="downloadLatestBtn" style="padding:10px 15px; margin-top:15px;">
+  Download Latest Version
+</button>
 
 
   <div id="dashboard-status" style="display:flex;flex-direction:column;gap:15px;">
@@ -194,6 +194,41 @@
     renderSystemInfo();
   </script>
 </section>
+<script>
+  const GITHUB_RELEASES_API =
+    "https://api.github.com/repos/Xero-Development/The-X-Project/releases/latest";
+
+  async function setupDownloadButton() {
+    const btn = document.getElementById("downloadLatestBtn");
+    btn.innerText = "Loading...";
+
+    try {
+      const res = await fetch(GITHUB_RELEASES_API);
+      const release = await res.json();
+
+      if (!release.assets || release.assets.length === 0) {
+        btn.innerText = "No Downloads";
+        btn.disabled = true;
+        return;
+      }
+
+      // Pick the first asset or choose by name
+      const asset = release.assets[0];
+
+      btn.innerText = `Download ${release.tag_name}`;
+      btn.onclick = () => {
+        window.location.href = asset.browser_download_url;
+      };
+
+    } catch (err) {
+      console.error("Failed to load release:", err);
+      btn.innerText = "Error Loading";
+      btn.disabled = true;
+    }
+  }
+
+  setupDownloadButton();
+</script>
 
 
     <div class="card">
