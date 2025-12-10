@@ -101,11 +101,93 @@
   </script>
 </section>
 
+<section id="system-info" style="padding:20px;">
+  <h2>System Stats & Info</h2>
 
-    <div class="card">
-      <h2>System Info</h2>
-      <p>Stats and diagnostic information can go here.</p>
-    </div>
+  <div id="sys-info-box" style="display:flex;flex-direction:column;gap:15px;">
+    Loading system info...
+  </div>
+
+  <script>
+    // Optional: Fetch REAL system stats from desktop app if installed
+    async function getLocalSystemStats() {
+      try {
+        const res = await fetch("http://localhost:17235/system");
+        return await res.json();
+      } catch {
+        return null; // Desktop app not installed
+      }
+    }
+
+    function getBrowserSystemInfo() {
+      return {
+        platform: navigator.platform || "Unknown",
+        userAgent: navigator.userAgent,
+        cores: navigator.hardwareConcurrency || "Unknown",
+        memoryGB: navigator.deviceMemory || "Unknown",
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        colorDepth: window.screen.colorDepth,
+        connection: navigator.connection ? {
+          type: navigator.connection.effectiveType,
+          downlink: navigator.connection.downlink
+        } : null
+      };
+    }
+
+    async function renderSystemInfo() {
+      const container = document.getElementById("sys-info-box");
+      container.innerHTML = "Loading...";
+
+      const browserInfo = getBrowserSystemInfo();
+      const localStats = await getLocalSystemStats();
+
+      let html = `
+        <div style="background:#1a1a1a;padding:15px;border-radius:8px;">
+          <h3>Browser-Level System Info</h3>
+          <p><strong>Platform:</strong> ${browserInfo.platform}</p>
+          <p><strong>CPU Threads:</strong> ${browserInfo.cores}</p>
+          <p><strong>Approx Device Memory:</strong> ${browserInfo.memoryGB} GB</p>
+          <p><strong>Screen:</strong> ${browserInfo.screenWidth}x${browserInfo.screenHeight}</p>
+          <p><strong>Color Depth:</strong> ${browserInfo.colorDepth}-bit</p>
+          <p><strong>User Agent:</strong> ${browserInfo.userAgent}</p>
+          ${
+            browserInfo.connection
+            ? `<p><strong>Network:</strong> ${browserInfo.connection.type}, ${browserInfo.connection.downlink} Mbps</p>`
+            : `<p><strong>Network:</strong> Unknown</p>`
+          }
+        </div>
+      `;
+
+      // If desktop app is running, show REAL system stats
+      if (localStats) {
+        html += `
+          <div style="background:#1a1a1a;padding:15px;border-radius:8px;">
+            <h3>Desktop System Stats (from X Launcher)</h3>
+            <p><strong>CPU Usage:</strong> ${localStats.cpu}%</p>
+            <p><strong>RAM Usage:</strong> ${localStats.ramUsed} / ${localStats.ramTotal} GB</p>
+            <p><strong>GPU:</strong> ${localStats.gpu}</p>
+            <p><strong>Disk Free:</strong> ${localStats.diskFree} GB</p>
+            <p><strong>Temperature:</strong> ${localStats.temp}°C</p>
+          </div>
+        `;
+      } else {
+        html += `
+          <div style="background:#1a1a1a;padding:15px;border-radius:8px;">
+            <h3>Enhanced System Stats</h3>
+            <p>The desktop app is not installed or not running.</p>
+            <p>Only browser-accessible information is shown.</p>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    renderSystemInfo();
+  </script>
+</section>
+
 
     <div class="card">
       <h2>Navigation</h2>
