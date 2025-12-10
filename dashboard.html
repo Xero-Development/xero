@@ -1,40 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>X Project Dashboard</title>
-  <style>
-    body {
-      background: #111;
-      color: #eee;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 2rem;
-    }
-    .card {
-      background: #1a1a1a;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>X Project Dashboard</h1>
-  </header>
-
 <section id="dashboard" style="padding:20px;">
   <h2>Dashboard</h2>
 
@@ -43,24 +6,28 @@
   </div>
 
   <script>
-    // Fetch latest GitHub release for version comparison
+    // Fetch latest release from GitHub
     async function getLatestRelease() {
-      const url = "https://api.github.com/repos/Xero-Development/The-X-Project/releases/latest";
       try {
-        const res = await fetch(url);
+        const res = await fetch("https://api.github.com/repos/Xero-Development/The-X-Project/releases/latest");
         return await res.json();
-      } catch (err) {
-        console.error("Failed to fetch GitHub latest release:", err);
+      } catch (e) {
+        console.error("GitHub fetch failed:", e);
         return null;
       }
     }
 
-    // Simulated installed apps (replace with backend later)
-    async function getInstalledAppsDashboard() {
-      return [
-        { id: "xcore", name: "X-Core", version: "1.0.0" },
-        { id: "xlauncher", name: "X-Launcher", version: "0.9.4" }
-      ];
+    // Ask the desktop app for its installed version
+    async function getLocalInstalledVersion() {
+      try {
+        const res = await fetch("http://localhost:17235/version"); 
+        // Desktop app must serve: { "version": "1.0.0" }
+        const data = await res.json();
+        return data.version;
+      } catch {
+        // App not installed or offline
+        return null;
+      }
     }
 
     async function renderDashboard() {
@@ -68,59 +35,32 @@
       container.innerHTML = "Loading...";
 
       const latest = await getLatestRelease();
-      const apps = await getInstalledAppsDashboard();
+      const latestTag = latest?.tag_name || "unknown";
 
-      if (!latest) {
-        container.innerHTML = "Could not load GitHub release data.";
-        return;
-      }
+      const installedVersion = await getLocalInstalledVersion();
 
-      const latestTag = latest.tag_name || "unknown";
+      const isInstalled = installedVersion !== null;
+      const isOutdated = isInstalled && installedVersion !== latestTag;
 
       container.innerHTML = `
         <div style="background:#1a1a1a;padding:15px;border-radius:8px;">
           <h3>Latest GitHub Release</h3>
           <p>Version: <strong>${latestTag}</strong></p>
         </div>
-      `;
 
-      apps.forEach(app => {
-        const isOutdated = app.version !== latestTag;
+        <div style="background:#1a1a1a;padding:15px;border-radius:8px;margin-top:15px;">
+          <h3>Your Installed Version</h3>
+          <p>${isInstalled ? installedVersion : "Not Installed"}</p>
 
-        const box = document.createElement("div");
-        box.style.background = "#1a1a1a";
-        box.style.padding = "15px";
-        box.style.borderRadius = "8px";
-
-        box.innerHTML = `
-          <h3>${app.name}</h3>
-          <p>Installed Version: ${app.version}</p>
-          <p>Latest Version: ${latestTag}</p>
           <p>Status: 
-            <span style="color:${isOutdated ? "#ff4d4d" : "#4dff88"};">
-              ${isOutdated ? "Outdated" : "Up to date"}
+            <span style="color:${isInstalled ? (isOutdated ? "#ff4d4d" : "#4dff88") : "#4dff88"};">
+              ${isInstalled ? (isOutdated ? "Outdated" : "Up to date") : "Up to date"}
             </span>
           </p>
-        `;
-
-        container.appendChild(box);
-      });
+        </div>
+      `;
     }
 
     renderDashboard();
   </script>
 </section>
-
-
-    <div class="card">
-      <h2>System Info</h2>
-      <p>Stats and diagnostic information can go here.</p>
-    </div>
-
-    <div class="card">
-      <h2>Navigation</h2>
-      <p><a href="index.html" style="color:#6cf;">Return to main page</a></p>
-    </div>
-  </div>
-</body>
-</html>
