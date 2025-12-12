@@ -1,22 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" class="x-app">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PX-OS | Auth</title>
+<!DOCTYPE html><html lang="en" class="x-app"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>PX-OS | Auth</title>
   <link rel="stylesheet" href="./x-layout.css" />
   <link rel="stylesheet" href="./x-components.css" />
   <link rel="stylesheet" href="./x-forms.css" />
   <link rel="stylesheet" href="./x-icons.css" />
   <link rel="stylesheet" href="./x-animations.css" />
-  <link rel="stylesheet" href="./x-styles.css" />
-</head>
-<body class="x-app">
-<nav class="x-navbar">
+  <link rel="stylesheet" href="./x-styles.css" /></head><body class="x-app"><nav class="x-navbar">
   <div class="x-navbar-inner">
-    <div class="x-navbar-left">
-      <span class="x-navbar-brand">Project X</span>
-    </div>
+    <div class="x-navbar-left"><span class="x-navbar-brand">Project X</span></div>
     <div class="x-navbar-center">
       <a class="x-nav-link" href="./index.html">Home</a>
       <a class="x-nav-link" href="./about.html">About</a>
@@ -25,59 +15,21 @@
       <a class="x-nav-link x-accent" href="./apply.html">Apply</a>
     </div>
   </div>
-</nav>
-<main class="x-container">
-  <section class="x-card">
-    <h1>Account</h1>
-    <p class="x-muted">Login or create an account (Supabase Auth).</p>
-
-    <div class="x-tabs">
-      <button class="x-tab active" type="button" data-tab="login">Login</button>
-      <button class="x-tab" type="button" data-tab="register">Register</button>
-    </div>
-
-    <form class="x-panel active" id="loginPanel">
-      <label class="x-label">Email
-        <input class="x-input" type="email" id="loginEmail" autocomplete="email" required />
-      </label>
-      <label class="x-label">Password
-        <input class="x-input" type="password" id="loginPass" autocomplete="current-password" required />
-      </label>
-
-      <div class="x-row">
-        <button class="x-button" type="submit">Login</button>
-        <a class="x-button x-button-ghost" href="./dashboard.html">Dashboard</a>
-      </div>
-
-      <div class="x-muted" id="loginStatus" style="margin-top:10px;"></div>
-    </form>
-
-    <form class="x-panel" id="registerPanel">
-      <label class="x-label">Username
-        <input class="x-input" type="text" id="regUser" autocomplete="username" required />
-      </label>
-      <label class="x-label">Email
-        <input class="x-input" type="email" id="regEmail" autocomplete="email" required />
-      </label>
-      <label class="x-label">Password
-        <input class="x-input" type="password" id="regPass" autocomplete="new-password" required />
-      </label>
-      <label class="x-label">Confirm Password
-        <input class="x-input" type="password" id="regPass2" autocomplete="new-password" required />
-      </label>
-
-      <div class="x-row">
-        <button class="x-button" type="submit">Create Account</button>
-        <a class="x-button x-button-ghost" href="./apply.html">Apply</a>
-      </div>
-
-      <div class="x-muted" id="regStatus" style="margin-top:10px;"></div>
-    </form>
-  </section>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase-client.js"></script>
-<script src="./auth.js" defer></script>
-</body>
-</html>
+</nav><main class="x-container"><section class="x-card">
+<h1>Account</h1><p class="x-muted">Email/password auth + Discord OAuth (Supabase).</p>
+<div class="x-row" style="margin:12px 0;"><a class="x-button" href="./oauth/consent.html">Login with Discord</a><a class="x-button x-button-ghost" href="./dashboard.html">Dashboard</a></div>
+<div class="x-tabs"><button class="x-tab active" type="button" data-tab="login">Login</button><button class="x-tab" type="button" data-tab="register">Register</button></div>
+<form class="x-panel active" id="loginPanel">
+<label class="x-label">Email<input class="x-input" type="email" id="loginEmail" autocomplete="email" required/></label>
+<label class="x-label">Password<input class="x-input" type="password" id="loginPass" autocomplete="current-password" required/></label>
+<div class="x-row"><button class="x-button" type="submit">Login</button></div><div class="x-muted" id="loginStatus" style="margin-top:10px;"></div></form>
+<form class="x-panel" id="registerPanel">
+<label class="x-label">Username<input class="x-input" type="text" id="regUser" autocomplete="username" required/></label>
+<label class="x-label">Email<input class="x-input" type="email" id="regEmail" autocomplete="email" required/></label>
+<label class="x-label">Password<input class="x-input" type="password" id="regPass" autocomplete="new-password" required/></label>
+<label class="x-label">Confirm Password<input class="x-input" type="password" id="regPass2" autocomplete="new-password" required/></label>
+<div class="x-row"><button class="x-button" type="submit">Create Account</button><a class="x-button x-button-ghost" href="./apply.html">Apply</a></div>
+<div class="x-muted" id="regStatus" style="margin-top:10px;"></div></form>
+</section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./supabase-client.js"></script><script src="./auth.js" defer></script>
+</body></html>

@@ -1,110 +1,34 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PX-OS | Discord Consent</title>
-
-  <link rel="stylesheet" href="../x-layout.css" />
-  <link rel="stylesheet" href="../x-components.css" />
-  <link rel="stylesheet" href="../x-forms.css" />
-  <link rel="stylesheet" href="../x-icons.css" />
-  <link rel="stylesheet" href="../x-animations.css" />
-  <link rel="stylesheet" href="../x-styles.css" />
-
-  <style>
-    .x-page { max-width: 980px; margin: 0 auto; padding: 22px; }
-    .x-slab { display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap; }
-    .x-slab > * { flex: 1 1 320px; min-width: 280px; }
-    .x-perms li { margin: 8px 0; }
-    .x-kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-    .x-note { opacity: .85; }
-  </style>
-</head>
-
-<body class="x-app">
-  <nav class="x-navbar">
-    <div class="x-navbar-inner">
-      <div class="x-navbar-left">
-        <span class="x-navbar-brand">Project X</span>
-      </div>
-      <div class="x-navbar-center">
-        <a class="x-nav-link" href="../index.html">Home</a>
-        <a class="x-nav-link" href="../about.html">About</a>
-        <a class="x-nav-link" href="../docs.html">Docs</a>
-        <a class="x-nav-link" href="../support.html">Support</a>
-        <a class="x-nav-link x-accent" href="../apply.html">Apply</a>
-      </div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>PX-OS | Discord Consent</title>
+<link rel="stylesheet" href="../x-layout.css"/><link rel="stylesheet" href="../x-components.css"/><link rel="stylesheet" href="../x-forms.css"/><link rel="stylesheet" href="../x-icons.css"/><link rel="stylesheet" href="../x-animations.css"/><link rel="stylesheet" href="../x-styles.css"/>
+<style>.x-page{max-width:980px;margin:0 auto;padding:22px}.x-slab{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}.x-slab>*{flex:1 1 320px;min-width:280px}.x-perms li{margin:8px 0}</style></head>
+<body class="x-app"><nav class="x-navbar">
+  <div class="x-navbar-inner">
+    <div class="x-navbar-left"><span class="x-navbar-brand">Project X</span></div>
+    <div class="x-navbar-center">
+      <a class="x-nav-link" href="../index.html">Home</a>
+      <a class="x-nav-link" href="../about.html">About</a>
+      <a class="x-nav-link" href="../docs.html">Docs</a>
+      <a class="x-nav-link" href="../support.html">Support</a>
+      <a class="x-nav-link x-accent" href="../apply.html">Apply</a>
     </div>
-  </nav>
-
-  <main class="x-page">
-    <section class="x-card">
-      <h1>Connect Discord</h1>
-      <p class="x-muted">
-        You’re about to be redirected to Discord’s authorization screen (the consent page).
-        This is where you approve what PX-OS can read.
-      </p>
-    </section>
-
-    <div class="x-slab">
-      <section class="x-card">
-        <h2>What we request</h2>
-        <ul class="x-perms">
-          <li><strong>identify</strong> (your Discord user id, username, global name, avatar)</li>
-          <li><strong>email</strong> (optional, if your Discord account has one and you allow it)</li>
-        </ul>
-        <p class="x-muted x-note">
-          We store your Discord id + basic profile fields in your Supabase <span class="x-kbd">profiles</span> row.
-          We don’t magically gain access to everything on your account, despite what some apps pretend.
-        </p>
-      </section>
-
-      <section class="x-card">
-        <h2>Continue</h2>
-        <p class="x-muted">This will force the consent prompt via <span class="x-kbd">prompt=consent</span>.</p>
-
-        <div class="x-row" style="margin-top:12px;">
-          <button class="x-button" id="continueBtn" type="button">Continue to Discord</button>
-          <a class="x-button x-button-ghost" href="../auth.html">Cancel</a>
-        </div>
-
-        <p class="x-muted" id="status" style="margin-top:10px;"></p>
-      </section>
-    </div>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../supabase-client.js"></script>
-  <script>
-    const statusEl = document.getElementById("status");
-    const btn = document.getElementById("continueBtn");
-
-    btn.addEventListener("click", async () => {
-      statusEl.textContent = "Redirecting to Discord…";
-
-      // Works on GitHub Pages subpaths too:
-      const callbackUrl = new URL("./callback.html", location.href).toString();
-
-      const { data, error } = await window.sb.auth.signInWithOAuth({
-        provider: "discord",
-        options: {
-          redirectTo: new URL("./oauth/callback.html", location.href).toString(),
-          scopes: "identify email",
-          queryParams: {
-            prompt: "consent"
-          }
-        }
-      });
-
-      if (error) {
-        statusEl.textContent = "OAuth start failed: " + error.message;
-        return;
-      }
-
-      // Some setups return data.url (server-side usage). Browser usually just redirects.
-      if (data && data.url) location.href = data.url;
-    });
-  </script>
-</body>
-</html>
+  </div>
+</nav>
+<main class="x-page">
+<section class="x-card"><h1>Connect Discord</h1><p class="x-muted">You will be redirected to Discord to approve access.</p></section>
+<div class="x-slab">
+<section class="x-card"><h2>What we request</h2><ul class="x-perms"><li><strong>identify</strong> (id, username, global name, avatar)</li><li><strong>email</strong> (optional)</li></ul>
+<p class="x-muted">We store basic Discord profile fields in your Supabase <code>profiles</code> row.</p></section>
+<section class="x-card"><h2>Continue</h2><p class="x-muted">Forces consent with <code>prompt=consent</code>.</p>
+<div class="x-row" style="margin-top:12px;"><button class="x-button" id="continueBtn" type="button">Continue to Discord</button><a class="x-button x-button-ghost" href="../auth.html">Cancel</a></div>
+<p class="x-muted" id="status" style="margin-top:10px;"></p></section>
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-client.js"></script>
+<script>
+const statusEl=document.getElementById("status");const btn=document.getElementById("continueBtn");
+btn.addEventListener("click",async()=>{statusEl.textContent="Redirecting to Discord…";
+const callbackUrl=new URL("./callback.html",location.href).toString();
+const {data,error}=await window.sb.auth.signInWithOAuth({provider:"discord",options:{redirectTo:callbackUrl,scopes:"identify email",queryParams:{prompt:"consent"}}});
+if(error){statusEl.textContent="OAuth start failed: "+error.message;return;}
+if(data&&data.url)location.href=data.url;
+});
+</script></body></html>

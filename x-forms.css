@@ -1,26 +1,9 @@
 .x-form{display:flex;flex-direction:column;gap:12px}
 .x-label{display:flex;flex-direction:column;gap:6px}
-.x-input{
-  width:100%;
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(0,0,0,.18);
-  color:var(--x-text);
-  outline:none;
-}
-.x-input:focus{border-color:rgba(102,204,255,.75); box-shadow:0 0 0 3px rgba(102,204,255,.12)}
+.x-input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.18);color:var(--x-text);outline:none}
+.x-input:focus{border-color:rgba(102,204,255,.75);box-shadow:0 0 0 3px rgba(102,204,255,.12)}
 .x-tabs{display:flex;gap:10px;margin:12px 0}
-.x-tab{
-  flex:1;
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.05);
-  color:var(--x-text);
-  cursor:pointer;
-  font-weight:800;
-}
-.x-tab.active{border-color:rgba(102,204,255,.75); color:var(--x-accent); background:rgba(102,204,255,.10)}
+.x-tab{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:var(--x-text);cursor:pointer;font-weight:800}
+.x-tab.active{border-color:rgba(102,204,255,.75);color:var(--x-accent);background:rgba(102,204,255,.10)}
 .x-panel{display:none;flex-direction:column;gap:12px;margin-top:6px}
 .x-panel.active{display:flex}

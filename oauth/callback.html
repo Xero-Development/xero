@@ -1,43 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PX-OS | OAuth Callback</title>
-
-  <link rel="stylesheet" href="../x-layout.css" />
-  <link rel="stylesheet" href="../x-components.css" />
-  <link rel="stylesheet" href="../x-forms.css" />
-  <link rel="stylesheet" href="../x-icons.css" />
-  <link rel="stylesheet" href="../x-animations.css" />
-  <link rel="stylesheet" href="../x-styles.css" />
-
-  <style>
-    .x-page { max-width: 720px; margin: 0 auto; padding: 22px; }
-  </style>
-</head>
-
-<body class="x-app">
-  <main class="x-page">
-    <section class="x-card">
-      <h1>Signing you in…</h1>
-      <p class="x-muted" id="status">Finishing OAuth callback.</p>
-    </section>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../supabase-client.js"></script>
-  <script>
-    const qs = new URLSearchParams(location.search);
-    const code = qs.get("code");
-
-    if (code) {
-      const { error } = await sb.auth.exchangeCodeForSession(code);
-      if (error) throw error;
-    }
-
-    location.replace("../dashboard.html");
-
-  </script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>PX-OS | OAuth Callback</title>
+<link rel="stylesheet" href="../x-layout.css"/><link rel="stylesheet" href="../x-components.css"/><link rel="stylesheet" href="../x-forms.css"/><link rel="stylesheet" href="../x-icons.css"/><link rel="stylesheet" href="../x-animations.css"/><link rel="stylesheet" href="../x-styles.css"/>
+<style>.x-page{max-width:720px;margin:0 auto;padding:22px}</style></head>
+<body class="x-app"><main class="x-page"><section class="x-card"><h1>Signing you in…</h1><p class="x-muted" id="status">Finishing OAuth callback.</p></section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-client.js"></script>
+<script>
+(async()=>{const statusEl=document.getElementById("status");const qs=new URLSearchParams(location.search);const code=qs.get("code");
+try{if(code){const {error}=await window.sb.auth.exchangeCodeForSession(code);if(error)throw error;}
+statusEl.textContent="Done. Redirecting…";location.replace(new URL("../dashboard.html",location.href).toString());
+}catch(e){statusEl.textContent="OAuth callback failed: "+(e?.message||String(e));}})();
+</script></body></html>
