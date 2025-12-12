@@ -1,51 +1,62 @@
-<html>
-  <head>
-    <title>PX-OS | Home</title>
-    <link rel="stylesheet" href="./x-layout.css" />
-    <link rel="stylesheet" href="./x-components.css" />
-    <link rel="stylesheet" href="./x-forms.css" />
-    <link rel="stylesheet" href="./x-icons.css" />
-    <link rel="stylesheet" href="./x-animations.css" />
-    <link rel="stylesheet" href="./x-styles.css" />
-  </head>
-<body>
-    <nav class="x-navbar">
-  <div class="x-navbar-left">
-    <span class="x-navbar-brand">Project X</span>
-  </div>
+<!DOCTYPE html>
+<html lang="en" class="x-app">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <div class="x-navbar-center">
-    <a class="x-nav-link" href="./index.html">Home</a>
-    <a class="x-nav-link" href="./about.html">About</a>
-    <a class="x-nav-link" href="./docs.html">Docs</a>
-    <a class="x-nav-link" href="./support.html">Support</a>
-    <a class="x-nav-link x-accent" href="./apply.html">Apply</a>
-  </div>
-</nav>
-<main class="x-container">
-  <section class="x-card">
-    <h1>Project X</h1>
-    <p>
-      PX-OS is actively developed and shipping updates.
-      Latest releases are pulled directly from GitHub.
-    </p>
-  </section>
+  <title>PX-OS | Home</title>
 
-  <section class="x-card">
-    <h2>Latest Releases</h2>
-    <ul id="releases" class="x-list"></ul>
-  </section>
+  <!-- X CSS system -->
+  <link rel="stylesheet" href="./x-layout.css" />
+  <link rel="stylesheet" href="./x-components.css" />
+  <link rel="stylesheet" href="./x-forms.css" />
+  <link rel="stylesheet" href="./x-icons.css" />
+  <link rel="stylesheet" href="./x-animations.css" />
+  <link rel="stylesheet" href="./x-styles.css" />
+</head>
 
-  <section class="x-card x-highlight">
-    <h2>We’re hiring staff</h2>
-    <p>
-      Want to help build PX-OS?
-      Submit an application now on the <a href="./apply.html">Apply</a> page.
-    </p>
-  </section>
-</main>
+<body class="x-app">
+
+  <nav class="x-navbar">
+    <div class="x-navbar-left">
+      <span class="x-navbar-brand">Project X</span>
+    </div>
+
+    <div class="x-navbar-center">
+      <a class="x-nav-link active" href="./index.html">Home</a>
+      <a class="x-nav-link" href="./about.html">About</a>
+      <a class="x-nav-link" href="./docs.html">Docs</a>
+      <a class="x-nav-link" href="./support.html">Support</a>
+      <a class="x-nav-link x-accent" href="./apply.html">Apply</a>
+    </div>
+  </nav>
+
+  <main class="x-container">
+    <section class="x-card">
+      <h1>Project X</h1>
+      <p>
+        PX-OS is actively developed and shipping updates.
+        Latest releases are pulled directly from GitHub.
+      </p>
+    </section>
+
+    <section class="x-card">
+      <h2>Latest Releases</h2>
+      <ul id="releases" class="x-list"></ul>
+    </section>
+
+    <section class="x-card x-highlight">
+      <h2>We’re hiring staff</h2>
+      <p>
+        Want to help build PX-OS?
+        Submit an application now on the
+        <a href="./apply.html">Apply</a> page.
+      </p>
+    </section>
+  </main>
+
+  <!-- X JS -->
+  <script src="./x-main.js" defer></script>
 
 </body>
-<script src="./x-main.js" defer></script>
-
 </html>
