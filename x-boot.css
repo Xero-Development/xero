@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    background: black;
+    color: #00ff00;
+    font-family: monospace;
+    padding: 20px;
+    overflow: hidden;
+}
+
+#bios-output {
+    white-space: pre-wrap;
+    font-size: 16px;
+}
+
+.line {
+    opacity: 0;
+    animation: appear 0.25s forwards;
+}
+
+.blink {
+    animation: blink 0.9s infinite steps(2);
+}
+
+@keyframes appear {
+    to { opacity: 1; }
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}

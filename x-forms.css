@@ -1,0 +1,73 @@
+/* FORM CORE --------------------------------------------------------- */
+
+.x-form {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.x-form label {
+    margin-bottom: 6px;
+    color: var(--x-text-200);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.x-form input,
+.x-form select,
+.x-form textarea {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--x-bg-700);
+    background: var(--x-bg-800);
+    color: var(--x-text-100);
+    font-size: 15px;
+    font-family: var(--x-font);
+    outline: none;
+    transition: border 0.15s, background 0.15s;
+}
+
+.x-form input:focus,
+.x-form select:focus,
+.x-form textarea:focus {
+    border-color: var(--x-accent);
+    background: var(--x-bg-750);
+}
+
+/* ERROR STATE ------------------------------------------------------- */
+
+.x-input-error {
+    border: 2px solid #ff4b4b !important;
+    background: rgba(255, 50, 50, 0.08) !important;
+}
+
+.x-input-error:focus {
+    border-color: #ff2f2f !important;
+    background: rgba(255, 50, 50, 0.15) !important;
+}
+
+/* REQUIRED FIELD INDICATOR ------------------------------------------ */
+
+.x-form label[data-required]::after,
+[data-required] + label::after {
+    content: " *";
+    color: #ff5555;
+}
+
+/* TEXTAREA ----------------------------------------------------------- */
+
+.x-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* INLINE FORMS ------------------------------------------------------- */
+
+.x-form-inline {
+    display: flex;
+    gap: 10px;
+}
+
+.x-form-inline .x-form {
+    flex: 1;
+}

@@ -1,0 +1,54 @@
+/* ==========================================================
+   X-ICONS
+   Unified icon system for The X Project
+   Uses the material icon font from a neutral CDN
+   ========================================================== */
+
+/* Load icon font (safe CDN, no forbidden names) */
+@import url("https://cdn.jsdelivr.net/npm/material-icons@1.13.7/iconfont/material-icons.css");
+
+/* Base icon style */
+.icon {
+    font-family: 'Material Icons', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; 
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    white-space: nowrap;
+    direction: ltr;
+    user-select: none;
+    vertical-align: middle;
+}
+
+/* Icon sizing helpers */
+.icon-sm { font-size: 16px; }
+.icon-md { font-size: 24px; }
+.icon-lg { font-size: 32px; }
+.icon-xl { font-size: 48px; }
+
+/* Icon color helpers */
+.icon-primary { color: #3a7afe; }
+.icon-danger  { color: #c0392b; }
+.icon-warning { color: #f1c40f; }
+.icon-success { color: #2ecc71; }
+.icon-muted   { color: #777; }
+.icon-light   { color: #eee; }
+
+/* Icon button (nice for UIs) */
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #1c1c1c;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: #2a2a2a;
+}

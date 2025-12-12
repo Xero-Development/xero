@@ -1,0 +1,211 @@
+/* ==========================================================
+   X-LAYOUT
+   Page layout & structural utilities for The X Project
+   Works with x-style.css + x-components.css
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   PAGE STRUCTURE
+   ---------------------------------------------------------- */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.page-header {
+    padding: 16px;
+    background: #1b1b1b;
+    border-bottom: 1px solid #333;
+}
+
+.page-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.page-footer {
+    padding: 10px;
+    background: #1b1b1b;
+    border-top: 1px solid #333;
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+}
+
+
+/* ----------------------------------------------------------
+   FLEX UTILITIES
+   ---------------------------------------------------------- */
+
+.flex { display: flex; }
+.flex-row { display: flex; flex-direction: row; }
+.flex-column { display: flex; flex-direction: column; }
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-between { display: flex; justify-content: space-between; }
+.flex-around { display: flex; justify-content: space-around; }
+.flex-even { display: flex; justify-content: space-evenly; }
+
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+
+.justify-center { justify-content: center; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+
+.gap-sm { gap: 8px; }
+.gap-md { gap: 16px; }
+.gap-lg { gap: 24px; }
+
+
+/* ----------------------------------------------------------
+   GRID SYSTEM
+   ---------------------------------------------------------- */
+
+.grid {
+    display: grid;
+    gap: 16px;
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-auto { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+
+/* ----------------------------------------------------------
+   SIDEBAR LAYOUT
+   ---------------------------------------------------------- */
+
+.layout-sidebar {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: #141414;
+    border-right: 1px solid #333;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px 12px;
+    color: #ddd;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background: #1f1f1f;
+}
+
+.sidebar a.active {
+    background: #3a7afe;
+    color: white;
+}
+
+.content-area {
+    flex: 1;
+    padding: 22px;
+    overflow-y: auto;
+}
+
+
+/* ----------------------------------------------------------
+   TOP NAVBAR LAYOUT
+   ---------------------------------------------------------- */
+
+.navbar {
+    background: #181818;
+    border-bottom: 1px solid #333;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+
+/* ----------------------------------------------------------
+   SPLIT PANELS (two resizable sections)
+   ---------------------------------------------------------- */
+
+.split {
+    display: flex;
+    height: 100%;
+}
+
+.split-left,
+.split-right {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.split .divider {
+    width: 3px;
+    background: #333;
+    cursor: col-resize;
+}
+
+
+/* ----------------------------------------------------------
+   CONTAINERS
+   ---------------------------------------------------------- */
+
+.container {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1100px;
+}
+
+.container-sm { max-width: 500px; }
+.container-md { max-width: 800px; }
+.container-lg { max-width: 1400px; }
+
+
+/* ----------------------------------------------------------
+   SPACING UTILITIES
+   ---------------------------------------------------------- */
+
+.m-0 { margin: 0; }
+.mt-sm { margin-top: 8px; }
+.mt-md { margin-top: 16px; }
+.mt-lg { margin-top: 24px; }
+
+.mb-sm { margin-bottom: 8px; }
+.mb-md { margin-bottom: 16px; }
+.mb-lg { margin-bottom: 24px; }
+
+.p-sm { padding: 8px; }
+.p-md { padding: 16px; }
+.p-lg { padding: 24px; }
+
+
+/* ----------------------------------------------------------
+   HIDDEN / SHOW
+   ---------------------------------------------------------- */
+
+.hidden { display: none !important; }
+.show { display: block !important; }

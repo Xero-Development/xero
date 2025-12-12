@@ -1,0 +1,168 @@
+/* ==========================================================
+   X-ANIMATIONS
+   Animation library for The X Project UI
+   Reusable on all pages
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   FADE IN
+   ---------------------------------------------------------- */
+
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* ----------------------------------------------------------
+   FADE OUT
+   ---------------------------------------------------------- */
+
+.fade-out {
+    animation: fadeOut 0.6s ease forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ----------------------------------------------------------
+   SLIDE IN — Directions
+   ---------------------------------------------------------- */
+
+.slide-in-up {
+    animation: slideInUp 0.5s ease forwards;
+}
+
+@keyframes slideInUp {
+    0% { transform: translateY(25px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.slide-in-down {
+    animation: slideInDown 0.5s ease forwards;
+}
+
+@keyframes slideInDown {
+    0% { transform: translateY(-25px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease forwards;
+}
+
+@keyframes slideInLeft {
+    0% { transform: translateX(-25px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease forwards;
+}
+
+@keyframes slideInRight {
+    0% { transform: translateX(25px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+/* ----------------------------------------------------------
+   POP-IN (window spawn)
+   ---------------------------------------------------------- */
+
+.pop-in {
+    animation: popIn 0.35s cubic-bezier(.18,.89,.32,1.28) forwards;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ----------------------------------------------------------
+   PULSE
+   ---------------------------------------------------------- */
+
+.pulse {
+    animation: pulseAnim 1.3s ease-in-out infinite;
+}
+
+@keyframes pulseAnim {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* ----------------------------------------------------------
+   GLOW (subtle neon breathing glow)
+   ---------------------------------------------------------- */
+
+.glow {
+    animation: glowPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0% { text-shadow: 0 0 4px #3a7afe; }
+    50% { text-shadow: 0 0 12px #3a7afe; }
+    100% { text-shadow: 0 0 4px #3a7afe; }
+}
+
+/* ----------------------------------------------------------
+   SHIMMER (loading bars, skeleton UI)
+   ---------------------------------------------------------- */
+
+.shimmer {
+    background: linear-gradient(90deg, #111 0%, #222 50%, #111 100%);
+    background-size: 200% 100%;
+    animation: shimmerMove 1.5s linear infinite;
+}
+
+@keyframes shimmerMove {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ----------------------------------------------------------
+   SHAKE (wrong password, error feedback)
+   ---------------------------------------------------------- */
+
+.shake {
+    animation: shakeAnim 0.4s ease;
+}
+
+@keyframes shakeAnim {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+/* ----------------------------------------------------------
+   BOOT WAVE (startup effect)
+   ---------------------------------------------------------- */
+
+.boot-wave {
+    animation: bootWave 2.5s ease-in-out forwards;
+}
+
+@keyframes bootWave {
+    0% {
+        opacity: 0;
+        filter: blur(6px);
+        transform: scale(1.05);
+    }
+    50% {
+        opacity: 1;
+        filter: blur(2px);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+    }
+}
