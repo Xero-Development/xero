@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Local stats (exact schema)
-  const STATS_URL = "http://localhost:17361/v1/stats";
+  const STATS_URL = "http://127.0.0.1:17361/v1/stats";
   const setText = (el, v) => { if (el) el.textContent = (v ?? "--"); };
   const el = (id) => document.getElementById(id);
 
