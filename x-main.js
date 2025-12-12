@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let url = release.html_url;
     let label = release.name || release.tag_name;
 
+    if (release.assets && release.assets.length > 0) {
+      url = release.assets[0].browser_download_url;
+    }
 
     btn.href = url;
     btn.textContent = `Download ${label}`;
@@ -23,4 +26,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     text.textContent = "Failed to load latest release.";
   }
 });
-
