@@ -29,4 +29,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 const WORKER_BASE = "https://teamx-developments.github.io/x/";
 
   document.getElementById("discordLogin").href =
-    `${WORKER_BASE}/login`;
+    `https://discord.com/oauth2/authorize?client_id=1448874475348033577&response_type=code&redirect_uri=https%3A%2F%2Fteamx-developments.github.io%2Fx%2Fcallback&scope=identify`;
