@@ -50,6 +50,14 @@
           <div class="x-os-clock" id="liveClock">--:--:--</div>
         </div>
       </div>
+
+      <nav class="x-os-nav">
+        <button class="x-os-item active" data-view="view-overview">Overview</button>
+        <button class="x-os-item" data-view="view-live">OS Live</button>
+        <button class="x-os-item" data-view="view-apps">Applications</button>
+        <button class="x-os-item" data-view="view-profile">Profile</button>
+      </nav>
+
       <div class="x-os-side-bottom">
         <div class="x-os-stat">
           <div class="x-muted x-small">Online</div>
@@ -65,42 +73,101 @@
     <!-- MAIN WORKSPACE -->
     <main class="x-os-main">
       <!-- OVERVIEW -->
-      <section class="x-card">
-      <h2>OS Status</h2>
+      <section class="x-os-view active" id="view-overview">
+        <div class="x-card">
+          <h1>Dashboard</h1>
+          <p class="x-muted">Now it looks like an OS. You’re welcome.</p>
+        </div>
+        <section class="x-card">
+          <h2>OS Status</h2>
 
-      <div class="x-status-grid">
-        <div class="x-status-item">
-          <div class="x-muted x-small">Session</div>
-          <div id="osSession" class="x-status-val">--</div>
+          <div class="x-status-grid">
+            <div class="x-status-item">
+              <div class="x-muted x-small">Session</div>
+              <div id="osSession" class="x-status-val">--</div>
+            </div>
+
+            <div class="x-status-item">
+              <div class="x-muted x-small">Realtime</div>
+              <div id="osRealtime" class="x-status-val">--</div>
+            </div>
+
+            <div class="x-status-item">
+              <div class="x-muted x-small">Online</div>
+              <div id="osOnline" class="x-status-val">--</div>
+            </div>
+
+            <div class="x-status-item">
+              <div class="x-muted x-small">DB Sync</div>
+              <div id="osDbSync" class="x-status-val">--</div>
+            </div>
+
+            <div class="x-status-item">
+              <div class="x-muted x-small">Latency</div>
+              <div id="osLatency" class="x-status-val">--</div>
+            </div>
+
+            <div class="x-status-item">
+              <div class="x-muted x-small">PX-OS Version</div>
+              <div id="osVersion" class="x-status-val">--</div>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- LIVE -->
+      <section class="x-os-view" id="view-live">
+        <div class="x-card">
+          <h2>Online Users</h2>
+          <ul id="onlineList" class="x-list" style="margin-top:10px;"></ul>
         </div>
 
-        <div class="x-status-item">
-          <div class="x-muted x-small">Realtime</div>
-          <div id="osRealtime" class="x-status-val">--</div>
+        <div class="x-card">
+          <h2>Realtime Feed</h2>
+          <p class="x-muted">Live updates from the database.</p>
+          <ul id="appFeed" class="x-list" style="margin-top:10px;"></ul>
         </div>
+      </section>
 
-        <div class="x-status-item">
-          <div class="x-muted x-small">Online</div>
-          <div id="osOnline" class="x-status-val">--</div>
+      <!-- APPLICATIONS -->
+      <section class="x-os-view" id="view-apps">
+        <div class="x-card">
+          <h2>Your Applications</h2>
+          <p class="x-muted">This updates live when your application changes.</p>
+          <ul id="appFeed2" class="x-list" style="margin-top:10px;"></ul>
         </div>
+      </section>
 
-        <div class="x-status-item">
-          <div class="x-muted x-small">DB Sync</div>
-          <div id="osDbSync" class="x-status-val">--</div>
-        </div>
+      <!-- PROFILE -->
+      <section class="x-os-view" id="view-profile">
+        <section class="x-card" id="userCard">
+          <h2>Account</h2>
 
-        <div class="x-status-item">
-          <div class="x-muted x-small">Latency</div>
-          <div id="osLatency" class="x-status-val">--</div>
-        </div>
+          <p class="x-muted" id="profileLine">Loading user…</p>
 
-        <div class="x-status-item">
-          <div class="x-muted x-small">PX-OS Version</div>
-          <div id="osVersion" class="x-status-val">--</div>
-        </div>
-      </div>
-    </section>
+          <div class="x-row" style="margin-top:12px;">
+            <button class="x-button x-button-ghost" id="editProfileBtn" type="button">
+              Edit Profile
+            </button>
+          </div>
 
+          <div id="editProfileSection" style="display:none; margin-top:14px;">
+            <form id="editProfileForm" class="x-form">
+              <label class="x-label">Username
+                <input class="x-input" id="editUsername" type="text" placeholder="New username" required />
+              </label>
+
+              <div class="x-row">
+                <button class="x-button" type="submit">Save</button>
+                <button class="x-button x-button-ghost" id="cancelEditBtn" type="button">Cancel</button>
+              </div>
+
+              <p class="x-muted" id="editStatus" style="margin-top:10px;"></p>
+            </form>
+          </div>
+        </section>
+      </section>
     </main>
   </div>
 
