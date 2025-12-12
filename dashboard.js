@@ -169,3 +169,61 @@ document.addEventListener("DOMContentLoaded", () => {
     collapseBtn.textContent = os.classList.contains("collapsed") ? "Expand" : "Collapse";
   });
 });
+// ---- OS STATUS PANEL ----
+const osSession = document.getElementById("osSession");
+const osRealtime = document.getElementById("osRealtime");
+const osOnline = document.getElementById("osOnline");
+const osDbSync = document.getElementById("osDbSync");
+const osLatency = document.getElementById("osLatency");
+const osVersion = document.getElementById("osVersion");
+
+// Session
+if (osSession) osSession.textContent = user ? "authenticated" : "signed out";
+
+// Realtime (mirrors rtStatus)
+if (osRealtime && rtStatus) osRealtime.textContent = rtStatus.textContent || "starting…";
+
+// Online (mirrors sidebar counter)
+const onlineCounterEl = document.getElementById("onlineCount");
+if (osOnline && onlineCounterEl) osOnline.textContent = onlineCounterEl.textContent || "0";
+
+// DB sync time will be updated when apps refresh
+function markDbSync() {
+  if (osDbSync) osDbSync.textContent = new Date().toLocaleTimeString();
+}
+
+// Latency: quick fetch timing to GitHub API (works everywhere)
+async function measureLatency() {
+  const start = performance.now();
+  try {
+    await fetch("https://api.github.com/rate_limit", { cache: "no-store" });
+    const ms = Math.round(performance.now() - start);
+    if (osLatency) osLatency.textContent = `${ms} ms`;
+  } catch {
+    if (osLatency) osLatency.textContent = "offline";
+  }
+}
+measureLatency();
+setInterval(measureLatency, 30000);
+
+// PX-OS Version: latest release tag
+async function loadVersion() {
+  try {
+    const res = await fetch("https://api.github.com/repos/TeamX-Developments/The-X-Project/releases/latest");
+    const rel = await res.json();
+    const ver = rel.tag_name || rel.name || "unknown";
+    if (osVersion) osVersion.textContent = ver;
+  } catch {
+    if (osVersion) osVersion.textContent = "unknown";
+  }
+}
+loadVersion();
+
+// Keep osRealtime in sync whenever rtStatus changes
+const rtObserver = new MutationObserver(() => {
+  if (osRealtime && rtStatus) osRealtime.textContent = rtStatus.textContent || "starting…";
+});
+if (rtStatus) rtObserver.observe(rtStatus, { childList: true, subtree: true });
+
+// Hook DB sync marker into your app refresh
+// Call markDbSync() at the end of refreshMyApps()
