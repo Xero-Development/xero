@@ -1,187 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="x-app">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PX-OS | Auth</title>
 
+  <!-- X CSS system -->
+  <link rel="stylesheet" href="./x-layout.css" />
+  <link rel="stylesheet" href="./x-components.css" />
+  <link rel="stylesheet" href="./x-forms.css" />
+  <link rel="stylesheet" href="./x-icons.css" />
+  <link rel="stylesheet" href="./x-animations.css" />
+  <link rel="stylesheet" href="./x-styles.css" />
+
+  <!-- Auth-only glue (small, non-invasive) -->
   <style>
-    :root {
-      --x-bg: #0e0f13;
-      --x-card: #151821;
-      --x-border: #222633;
-      --x-text: #ffffff;
-      --x-text-muted: #9aa0a6;
-      --x-accent: #6cf;
+    .x-auth-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 28px 16px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--x-bg);
-      color: var(--x-text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-
+    .x-auth-head {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
     }
 
-    .x-auth {
-      width: 100%;
-      max-width: 420px;
-      background: var(--x-card);
-      border: 1px solid var(--x-border);
-      border-radius: 14px;
-      padding: 24px;
-    }
-
-    h1 {
-      margin: 0 0 16px;
-      text-align: center;
-      font-weight: 600;
+    .x-auth-sub {
+      opacity: 0.85;
     }
 
     .x-tabs {
       display: flex;
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin: 14px 0 10px;
     }
 
     .x-tab {
       flex: 1;
-      padding: 8px;
-      background: transparent;
-      border: 1px solid var(--x-border);
-      border-radius: 8px;
-      color: var(--x-text-muted);
+      padding: 10px 12px;
+      border-radius: 10px;
       cursor: pointer;
-      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: inherit;
+      font-weight: 600;
     }
 
     .x-tab.active {
-      color: var(--x-accent);
-      border-color: var(--x-accent);
+      border-color: rgba(102,204,255,0.75);
+      color: var(--x-accent, #6cf);
+      background: rgba(102,204,255,0.10);
     }
 
-    .x-form {
+    .x-auth-form {
       display: none;
       flex-direction: column;
       gap: 12px;
+      margin-top: 10px;
     }
 
-    .x-form.active {
+    .x-auth-form.active {
       display: flex;
     }
 
-    input {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--x-border);
-      background: #0b0d12;
-      color: var(--x-text);
-      font-size: 0.9rem;
+    /* If your x-forms already defines these, great. If not, this prevents “unstyled inputs”. */
+    .x-input, .x-select, .x-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      color: inherit;
+      outline: none;
     }
 
-    button.submit {
-      margin-top: 6px;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background: var(--x-accent);
-      color: #000;
-      font-weight: 600;
+    .x-input:focus, .x-select:focus, .x-textarea:focus {
+      border-color: rgba(102,204,255,0.75);
+      box-shadow: 0 0 0 3px rgba(102,204,255,0.12);
+    }
+
+    .x-button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 0;
       cursor: pointer;
+      font-weight: 700;
+      background: var(--x-accent, #6cf);
+      color: #000;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    .x-note {
-      margin-top: 14px;
-      font-size: 0.8rem;
-      color: var(--x-text-muted);
-      text-align: center;
+    .x-button-ghost {
+      background: rgba(255,255,255,0.06);
+      color: inherit;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .x-auth-note {
+      margin-top: 12px;
+      opacity: 0.85;
+      font-size: 0.95rem;
       line-height: 1.4;
+    }
+
+    .x-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .x-muted {
+      opacity: 0.8;
     }
   </style>
 </head>
 
-<body>
+<body class="x-app">
 
-  <div class="x-auth">
-    <h1>Project X</h1>
-
-    <div class="x-tabs">
-      <button class="x-tab active" data-tab="login">Login</button>
-      <button class="x-tab" data-tab="register">Register</button>
+  <!-- Navbar -->
+  <nav class="x-navbar">
+    <div class="x-navbar-left">
+      <span class="x-navbar-brand">Project X</span>
     </div>
 
-    <!-- Login -->
-    <form class="x-form active" id="login">
-      <input type="email" placeholder="Email address" required />
-      <button class="submit" type="submit">Request Login</button>
-    </form>
-
-    <!-- Register -->
-    <form class="x-form" id="register">
-      <input type="text" placeholder="Username" required />
-      <input type="email" placeholder="Email address" required />
-      <button class="submit" type="submit">Request Account</button>
-    </form>
-
-    <div class="x-note">
-      This system sends an email request.<br />
-      No passwords are collected.
+    <div class="x-navbar-center">
+      <a class="x-nav-link" href="./index.html">Home</a>
+      <a class="x-nav-link" href="./about.html">About</a>
+      <a class="x-nav-link" href="./docs.html">Docs</a>
+      <a class="x-nav-link" href="./support.html">Support</a>
+      <a class="x-nav-link x-accent" href="./apply.html">Apply</a>
+      <a class="x-nav-link active" href="./auth.html">Auth</a>
     </div>
-  </div>
+  </nav>
+
+  <main class="x-container">
+    <div class="x-auth-wrap">
+      <section class="x-card">
+        <div class="x-auth-head">
+          <h1>Account</h1>
+          <p class="x-auth-sub x-muted">
+            This is request-based auth for now. It emails the team. No passwords collected because we’re not doing security theater.
+          </p>
+        </div>
+
+        <div class="x-tabs">
+          <button class="x-tab active" type="button" data-tab="login">Login</button>
+          <button class="x-tab" type="button" data-tab="register">Register</button>
+        </div>
+
+        <!-- LOGIN -->
+        <form class="x-auth-form active" id="loginForm">
+          <label>
+            Email
+            <input class="x-input" type="email" name="email" placeholder="you@example.com" required />
+          </label>
+
+          <div class="x-row">
+            <button class="x-button" type="submit">Request Login</button>
+            <a class="x-button x-button-ghost" href="./dashboard.html">Go to Dashboard</a>
+          </div>
+
+          <div class="x-auth-note x-muted" id="loginStatus"></div>
+        </form>
+
+        <!-- REGISTER -->
+        <form class="x-auth-form" id="registerForm">
+          <label>
+            Username
+            <input class="x-input" type="text" name="username" placeholder="Your username" required />
+          </label>
+
+          <label>
+            Email
+            <input class="x-input" type="email" name="email" placeholder="you@example.com" required />
+          </label>
+
+          <label>
+            Discord Username
+            <input class="x-input" type="text" name="discord" placeholder="user#0000 or @user" required />
+          </label>
+
+          <label>
+            Role
+            <select class="x-select" name="role" required>
+              <option value="">Select one</option>
+              <option value="Developer">Developer</option>
+              <option value="Designer">Designer</option>
+              <option value="Moderator">Moderator</option>
+              <option value="Support">Support</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+
+          <label>
+            Why should we accept you?
+            <textarea class="x-textarea" name="message" rows="5" placeholder="Be specific. ‘I’m active’ is not a skill." required></textarea>
+          </label>
+
+          <div class="x-row">
+            <button class="x-button" type="submit">Request Account</button>
+            <a class="x-button x-button-ghost" href="./apply.html">Open Apply Page</a>
+          </div>
+
+          <div class="x-auth-note x-muted" id="registerStatus"></div>
+        </form>
+      </section>
+    </div>
+  </main>
 
   <script>
     const ADMIN_EMAIL = "teamxdevelopments@gmail.com";
 
+    // Tabs
     const tabs = document.querySelectorAll(".x-tab");
-    const forms = document.querySelectorAll(".x-form");
+    const forms = document.querySelectorAll(".x-auth-form");
 
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
         tabs.forEach(t => t.classList.remove("active"));
         forms.forEach(f => f.classList.remove("active"));
 
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.tab).classList.add("active");
+        btn.classList.add("active");
+        const id = btn.dataset.tab === "login" ? "loginForm" : "registerForm";
+        document.getElementById(id).classList.add("active");
       });
     });
 
-    function sendEmail(subject, body) {
-      const mailto =
+    function openMail(subject, body) {
+      const url =
         `mailto:${ADMIN_EMAIL}` +
         `?subject=${encodeURIComponent(subject)}` +
         `&body=${encodeURIComponent(body)}`;
 
-      window.location.href = mailto;
+      window.location.href = url;
     }
 
-    document.getElementById("login").addEventListener("submit", e => {
+    // Login request (email only, no passwords)
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
       e.preventDefault();
+      const email = e.target.email.value.trim();
+      const status = document.getElementById("loginStatus");
 
-      const email = e.target.querySelector("input").value;
-
-      sendEmail(
+      openMail(
         "PX-OS Login Request",
-        `Email: ${email}\n\nUser is requesting login access.`
+        `Email: ${email}\n\nUser is requesting login access.\n(Password not collected.)`
       );
+
+      status.textContent = "Opening your email client… send the email to complete the request. Then you can continue to the dashboard.";
     });
 
-    document.getElementById("register").addEventListener("submit", e => {
+    // Register request
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
       e.preventDefault();
+      const data = new FormData(e.target);
+      const status = document.getElementById("registerStatus");
 
-      const inputs = e.target.querySelectorAll("input");
-
-      sendEmail(
+      openMail(
         "PX-OS Registration Request",
-        `Username: ${inputs[0].value}\nEmail: ${inputs[1].value}\n\nUser is requesting an account.`
+        [
+          `Username: ${data.get("username")}`,
+          `Email: ${data.get("email")}`,
+          `Discord: ${data.get("discord")}`,
+          `Role: ${data.get("role")}`,
+          "",
+          "Message:",
+          data.get("message")
+        ].join("\n")
       );
+
+      status.textContent = "Opening your email client… send the email to submit your request.";
     });
   </script>
 
