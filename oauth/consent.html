@@ -24,11 +24,31 @@
 </div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-client.js"></script>
 <script>
-const statusEl=document.getElementById("status");const btn=document.getElementById("continueBtn");
-btn.addEventListener("click",async()=>{statusEl.textContent="Redirecting to Discord…";
-const callbackUrl=new URL("./callback.html",location.href).toString();
-const {data,error}=await window.sb.auth.signInWithOAuth({provider:"discord",options:{redirectTo:callbackUrl,scopes:"identify email",queryParams:{prompt:"consent"}}});
-if(error){statusEl.textContent="OAuth start failed: "+error.message;return;}
-if(data&&data.url)location.href=data.url;
+const statusEl = document.getElementById("status");
+const btn = document.getElementById("continueBtn");
+
+btn.addEventListener("click", async () => {
+  statusEl.textContent = "Redirecting to Discord…";
+
+  const callbackUrl = new URL("./callback.html", location.href).toString();
+
+  const { data, error } = await window.sb.auth.signInWithOAuth({
+    provider: "discord",
+    options: {
+      redirectTo: callbackUrl,
+      scopes: "identify email",
+      queryParams: { prompt: "consent" },
+      skipBrowserRedirect: true
+    }
+  });
+
+  if (error) {
+    statusEl.textContent = "OAuth start failed: " + error.message;
+    return;
+  }
+
+  if (data?.url) location.href = data.url;
+  else statusEl.textContent = "OAuth start failed: missing redirect URL.";
 });
-</script></body></html>
+</script>
+</body></html>
