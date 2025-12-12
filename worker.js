@@ -8,7 +8,7 @@ export default {
 
       // You must set this redirect URI in Discord Developer Portal:
       // e.g. https://YOUR-WORKER.yourname.workers.dev/callback
-      const redirectUri = "https://discord.com/oauth2/authorize?client_id=1448874475348033577&response_type=code&redirect_uri=https%3A%2F%2Fteamx-developments.github.io%2Fcallback&scope=identify";
+      const redirectUri = "https://discord.com/oauth2/authorize?client_id=1448874475348033577&response_type=code&redirect_uri=https%3A%2F%2Fteamx-developments.github.io%2Fx%2Fcallback&scope=identify";
 
       const scope = "identify"; // keep it minimal
       const state = btoa(JSON.stringify({ returnTo, t: Date.now() }))
