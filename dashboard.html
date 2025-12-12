@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PX-OS | Dashboard</title>
+
   <link rel="stylesheet" href="./x-layout.css" />
   <link rel="stylesheet" href="./x-components.css" />
   <link rel="stylesheet" href="./x-forms.css" />
@@ -17,7 +18,7 @@
       margin: 0 auto;
       padding: 18px 24px;
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 300px 1fr;
       gap: 18px;
     }
     .x-os-side{
@@ -39,6 +40,7 @@
     }
     .x-os-view{ display:none; flex-direction: column; gap: 18px; }
     .x-os-view.active{ display:flex; }
+
     .x-os-side-top{
       padding: 14px;
       border-bottom: 1px solid rgba(255,255,255,.08);
@@ -60,6 +62,7 @@
       background: rgba(255,255,255,.04);
     }
     .x-os-clock{ font-size: 1.15rem; font-weight: 950; margin-top: 2px; }
+
     .x-os-nav{
       padding: 10px;
       display: flex;
@@ -83,6 +86,7 @@
       background: rgba(102,204,255,.10);
       color: var(--x-accent);
     }
+
     .x-os-side-bottom{
       padding: 12px;
       border-top: 1px solid rgba(255,255,255,.08);
@@ -93,13 +97,16 @@
     }
     .x-os-stat{ display:flex; flex-direction: column; gap: 2px; }
     .x-os-stat-num{ font-size: 1.2rem; font-weight: 950; }
-    .x-os-collapse{ padding: 8px 10px; }
-    .x-os.collapsed{ grid-template-columns: 86px 1fr; }
-    .x-os.collapsed .x-os-title,
-    .x-os.collapsed .x-os-mini,
-    .x-os.collapsed .x-os-stat,
-    .x-os.collapsed .x-os-collapse{ display:none; }
-    .x-os.collapsed .x-os-item{ text-align:center; padding: 10px; }
+
+    .x-avatar{
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      object-fit: cover;
+    }
+
     @media (max-width: 980px){
       .x-os{ grid-template-columns: 1fr; }
       .x-os-side{ position: relative; top: 0; height: auto; }
@@ -127,6 +134,7 @@
   </nav>
 
   <div class="x-os">
+    <!-- Sidebar -->
     <aside class="x-os-side">
       <div class="x-os-side-top">
         <div class="x-os-badge">
@@ -141,10 +149,18 @@
           <div class="x-muted x-small">Local time</div>
           <div class="x-os-clock" id="liveClock">--:--:--</div>
         </div>
+
+        <div class="x-os-mini">
+          <div class="x-muted x-small">Stats API</div>
+          <div style="font-weight:900;" id="statsApi">--</div>
+          <div class="x-muted x-small" style="margin-top:6px;">Online</div>
+          <div style="font-weight:900;"><span id="onlineCount">0</span></div>
+        </div>
       </div>
 
       <nav class="x-os-nav">
         <button class="x-os-item active" data-view="view-overview">Overview</button>
+        <button class="x-os-item" data-view="view-stats">OS Stats</button>
         <button class="x-os-item" data-view="view-live">OS Live</button>
         <button class="x-os-item" data-view="view-apps">Applications</button>
         <button class="x-os-item" data-view="view-profile">Profile</button>
@@ -152,43 +168,59 @@
 
       <div class="x-os-side-bottom">
         <div class="x-os-stat">
-          <div class="x-muted x-small">Online</div>
-          <div class="x-os-stat-num"><span id="onlineCount">0</span></div>
+          <div class="x-muted x-small">User</div>
+          <div class="x-os-stat-num" id="sideUser">--</div>
         </div>
-
-        <button class="x-button x-button-ghost x-os-collapse" id="collapseSide" type="button">Collapse</button>
       </div>
     </aside>
 
+    <!-- Workspace -->
     <main class="x-os-main">
+
+      <!-- Overview -->
       <section class="x-os-view active" id="view-overview">
         <section class="x-card">
           <h1>Dashboard</h1>
-          <p class="x-muted">Live status, presence, and your account. Also your local agent stats (if the browser allows it).</p>
+          <p class="x-muted">Presence + realtime + local OS stats. Assuming your browser doesn’t block localhost, which it loves doing.</p>
         </section>
 
         <section class="x-card">
-          <h2>OS Status</h2>
-          <p class="x-muted">Source: <code>localhost:17361/v1/stats</code></p>
-
+          <h2>Quick Status</h2>
           <div class="x-status-grid">
             <div class="x-status-item"><div class="x-muted x-small">Platform</div><div id="osPlatform" class="x-status-val">--</div></div>
             <div class="x-status-item"><div class="x-muted x-small">Release</div><div id="osRelease" class="x-status-val">--</div></div>
             <div class="x-status-item"><div class="x-muted x-small">Arch</div><div id="osArch" class="x-status-val">--</div></div>
             <div class="x-status-item"><div class="x-muted x-small">Hostname</div><div id="osHostname" class="x-status-val">--</div></div>
             <div class="x-status-item"><div class="x-muted x-small">Uptime</div><div id="osUptime" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">Load Avg</div><div id="osLoadavg" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">Cores</div><div id="osCores" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">CPU Model</div><div id="osCpuModel" class="x-status-val">--</div></div>
-
-            <div class="x-status-item"><div class="x-muted x-small">Memory Total</div><div id="memTotal" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">Memory Free</div><div id="memFree" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">Process RSS</div><div id="procRss" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">Heap Used</div><div id="procHeapUsed" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">Heap Total</div><div id="procHeapTotal" class="x-status-val">--</div></div>
-
             <div class="x-status-item"><div class="x-muted x-small">Process CPU</div><div id="procCpu" class="x-status-val">--</div></div>
-            <div class="x-status-item"><div class="x-muted x-small">Stats API</div><div id="statsApi" class="x-status-val">--</div></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Stats -->
+      <section class="x-os-view" id="view-stats">
+        <section class="x-card">
+          <h2>OS Status</h2>
+          <p class="x-muted">Source: <code>http://127.0.0.1:17361/v1/stats</code></p>
+
+          <div class="x-status-grid">
+            <div class="x-status-item"><div class="x-muted x-small">Platform</div><div id="osPlatform2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Release</div><div id="osRelease2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Arch</div><div id="osArch2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Hostname</div><div id="osHostname2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Uptime</div><div id="osUptime2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Load Avg</div><div id="osLoadavg2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Cores</div><div id="osCores2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">CPU Model</div><div id="osCpuModel2" class="x-status-val">--</div></div>
+
+            <div class="x-status-item"><div class="x-muted x-small">Memory Total</div><div id="memTotal2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Memory Free</div><div id="memFree2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Process RSS</div><div id="procRss2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Heap Used</div><div id="heapUsed2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Heap Total</div><div id="heapTotal2" class="x-status-val">--</div></div>
+
+            <div class="x-status-item"><div class="x-muted x-small">Process CPU</div><div id="procCpu2" class="x-status-val">--</div></div>
+            <div class="x-status-item"><div class="x-muted x-small">Timestamp</div><div id="statsTs2" class="x-status-val">--</div></div>
           </div>
 
           <details style="margin-top:12px;">
@@ -198,51 +230,72 @@
         </section>
       </section>
 
+      <!-- Live -->
       <section class="x-os-view" id="view-live">
         <section class="x-card">
           <h2>Online Users</h2>
           <ul id="onlineList" class="x-list" style="margin-top:10px;"></ul>
         </section>
+
         <section class="x-card">
           <h2>Realtime Feed</h2>
-          <p class="x-muted">Live updates from the database (your applications only).</p>
+          <p class="x-muted">Your staff applications (live).</p>
           <ul id="appFeed" class="x-list" style="margin-top:10px;"></ul>
         </section>
       </section>
 
+      <!-- Apps -->
       <section class="x-os-view" id="view-apps">
         <section class="x-card">
           <h2>Your Applications</h2>
-          <p class="x-muted">This updates live when your application changes.</p>
           <ul id="appFeed2" class="x-list" style="margin-top:10px;"></ul>
         </section>
       </section>
 
+      <!-- Profile -->
       <section class="x-os-view" id="view-profile">
-        <section class="x-card" id="userCard">
-          <h2>Account</h2>
-          <p class="x-muted" id="profileLine">Loading user…</p>
+        <section class="x-card">
+          <h2>Profile</h2>
+          <p class="x-muted" id="profileLine">Loading…</p>
 
-          <div class="x-row" style="margin-top:12px;">
-            <button class="x-button x-button-ghost" id="editProfileBtn" type="button">Edit Profile</button>
+          <div class="x-row" style="margin-top:14px;">
+            <img id="avatarPreview" class="x-avatar" alt="Avatar" />
+            <div style="min-width:240px;">
+              <div class="x-muted x-small">Discord</div>
+              <div style="font-weight:900;" id="discordLine">Not linked</div>
+            </div>
           </div>
 
-          <div id="editProfileSection" style="display:none; margin-top:14px;">
-            <form id="editProfileForm" class="x-form">
+          <div class="x-row" style="margin-top:14px;">
+            <button class="x-button x-button-ghost" id="toggleProfileEdit" type="button">Edit Profile</button>
+            <button class="x-button" id="importDiscord" type="button">Import from Discord</button>
+          </div>
+
+          <div id="profileEditor" style="display:none; margin-top:14px;">
+            <form id="profileForm" class="x-form">
               <label class="x-label">Username
-                <input class="x-input" id="editUsername" type="text" placeholder="New username" required />
+                <input class="x-input" id="pfUsername" type="text" placeholder="username" required />
+              </label>
+
+              <label class="x-label">Display name
+                <input class="x-input" id="pfDisplayName" type="text" placeholder="Display name" />
+              </label>
+
+              <label class="x-label">Avatar URL
+                <input class="x-input" id="pfAvatarUrl" type="url" placeholder="https://..." />
               </label>
 
               <div class="x-row">
                 <button class="x-button" type="submit">Save</button>
-                <button class="x-button x-button-ghost" id="cancelEditBtn" type="button">Cancel</button>
+                <button class="x-button x-button-ghost" id="cancelProfileEdit" type="button">Cancel</button>
               </div>
 
-              <p class="x-muted" id="editStatus" style="margin-top:10px;"></p>
+              <p class="x-muted" id="profileStatus" style="margin-top:10px;"></p>
             </form>
           </div>
         </section>
       </section>
+
     </main>
   </div>
 
