@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" class="x-app">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PX-OS | Auth</title>
+
+  <!-- X CSS system -->
+  <link rel="stylesheet" href="./x-layout.css" />
+  <link rel="stylesheet" href="./x-components.css" />
+  <link rel="stylesheet" href="./x-forms.css" />
+  <link rel="stylesheet" href="./x-icons.css" />
+  <link rel="stylesheet" href="./x-animations.css" />
+  <link rel="stylesheet" href="./x-styles.css" />
+
+  <style>
+    .x-auth-wrap { max-width: 560px; margin: 0 auto; padding: 26px 16px; }
+    .x-tabs { display:flex; gap:10px; margin:14px 0; }
+    .x-tab {
+      flex:1; padding:10px 12px; border-radius:10px; cursor:pointer;
+      border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:inherit; font-weight:700;
+    }
+    .x-tab.active { border-color: rgba(102,204,255,.75); color: var(--x-accent,#6cf); background: rgba(102,204,255,.10); }
+    .x-panel { display:none; flex-direction:column; gap:12px; margin-top:10px; }
+    .x-panel.active { display:flex; }
+    .x-muted { opacity:.85; }
+    .x-status { margin-top:10px; opacity:.9; }
+    .x-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .x-input {
+      width:100%; padding:10px 12px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.14); background: rgba(0,0,0,.18); color:inherit;
+      outline:none;
+    }
+    .x-input:focus { border-color: rgba(102,204,255,.75); box-shadow: 0 0 0 3px rgba(102,204,255,.12); }
+    .x-button {
+      padding:10px 14px; border-radius:10px; border:0; cursor:pointer;
+      font-weight:800; background: var(--x-accent,#6cf); color:#000; text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .x-button-ghost { background: rgba(255,255,255,.06); color:inherit; border:1px solid rgba(255,255,255,.14); }
+  </style>
+</head>
+
+<body class="x-app">
+  <nav class="x-navbar">
+    <div class="x-navbar-left">
+      <span class="x-navbar-brand">Project X</span>
+    </div>
+    <div class="x-navbar-center">
+      <a class="x-nav-link" href="./index.html">Home</a>
+      <a class="x-nav-link" href="./about.html">About</a>
+      <a class="x-nav-link" href="./docs.html">Docs</a>
+      <a class="x-nav-link" href="./support.html">Support</a>
+      <a class="x-nav-link x-accent" href="./apply.html">Apply</a>
+      <a class="x-nav-link active" href="./auth.html">Auth</a>
+    </div>
+  </nav>
+
+  <main class="x-container">
+    <div class="x-auth-wrap">
+      <section class="x-card">
+        <h1>Account</h1>
+        <p class="x-muted">Login or create an account with Supabase Auth.</p>
+
+        <div class="x-tabs">
+          <button class="x-tab active" type="button" data-tab="login">Login</button>
+          <button class="x-tab" type="button" data-tab="register">Register</button>
+        </div>
+
+        <!-- LOGIN -->
+        <form class="x-panel active" id="loginPanel">
+          <label>
+            Email
+            <input class="x-input" type="email" id="loginEmail" autocomplete="email" required />
+          </label>
+          <label>
+            Password
+            <input class="x-input" type="password" id="loginPass" autocomplete="current-password" required />
+          </label>
+
+          <div class="x-row">
+            <button class="x-button" type="submit">Login</button>
+            <a class="x-button x-button-ghost" href="./dashboard.html">Go to Dashboard</a>
+          </div>
+
+          <div class="x-status x-muted" id="loginStatus"></div>
+        </form>
+
+        <!-- REGISTER -->
+        <form class="x-panel" id="registerPanel">
+          <label>
+            Username
+            <input class="x-input" type="text" id="regUser" autocomplete="username" required />
+          </label>
+          <label>
+            Email
+            <input class="x-input" type="email" id="regEmail" autocomplete="email" required />
+          </label>
+          <label>
+            Password
+            <input class="x-input" type="password" id="regPass" autocomplete="new-password" required />
+          </label>
+          <label>
+            Confirm Password
+            <input class="x-input" type="password" id="regPass2" autocomplete="new-password" required />
+          </label>
+
+          <div class="x-row">
+            <button class="x-button" type="submit">Create Account</button>
+          </div>
+
+          <div class="x-status x-muted" id="regStatus"></div>
+          <p class="x-muted" style="margin-top:6px;">
+            If “Confirm email” is enabled, you’ll get a verification email and won’t be logged in until you confirm. :contentReference[oaicite:2]{index=2}
+          </p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- Supabase JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> <!-- :contentReference[oaicite:3]{index=3} -->
+  <script src="./supabase-client.js"></script>
+
+  <script>
+    // Tabs
+    const tabs = document.querySelectorAll(".x-tab");
+    const panels = {
+      login: document.getElementById("loginPanel"),
+      register: document.getElementById("registerPanel")
+    };
+
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        Object.values(panels).forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        panels[btn.dataset.tab].classList.add("active");
+      });
+    });
+
+    const loginStatus = document.getElementById("loginStatus");
+    const regStatus = document.getElementById("regStatus");
+
+    // If already signed in, go to dashboard
+    (async () => {
+      const { data: { user } } = await window.sb.auth.getUser(); // :contentReference[oaicite:4]{index=4}
+      if (user) location.replace("./dashboard.html");
+    })();
+
+    // LOGIN
+    panels.login.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loginStatus.textContent = "Signing in…";
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPass").value;
+
+      const { data, error } = await window.sb.auth.signInWithPassword({ email, password }); // :contentReference[oaicite:5]{index=5}
+
+      if (error) {
+        loginStatus.textContent = error.message;
+        return;
+      }
+
+      loginStatus.textContent = "Signed in. Redirecting…";
+      location.replace("./dashboard.html");
+    });
+
+    // REGISTER
+    panels.register.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      regStatus.textContent = "Creating account…";
+
+      const username = document.getElementById("regUser").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const pass1 = document.getElementById("regPass").value;
+      const pass2 = document.getElementById("regPass2").value;
+
+      if (pass1.length < 8) {
+        regStatus.textContent = "Password must be at least 8 characters.";
+        return;
+      }
+      if (pass1 !== pass2) {
+        regStatus.textContent = "Passwords do not match.";
+        return;
+      }
+
+      const { data, error } = await window.sb.auth.signUp({
+        email,
+        password: pass1,
+        options: { data: { username } }
+      }); // :contentReference[oaicite:6]{index=6}
+
+      if (error) {
+        regStatus.textContent = error.message;
+        return;
+      }
+
+      // If Confirm email is ON, session will be null until they confirm. :contentReference[oaicite:7]{index=7}
+      if (!data.session) {
+        regStatus.textContent = "Account created. Check your email to confirm, then come back and log in.";
+      } else {
+        regStatus.textContent = "Account created. Redirecting…";
+        location.replace("./dashboard.html");
+      }
+    });
+  </script>
+</body>
+</html>
