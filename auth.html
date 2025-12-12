@@ -90,5 +90,26 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-client.js"></script>
 <script src="./auth.js" defer></script>
+  <script>
+  function bounceToApp(token, botId) {
+    const url =
+      "pxos://auth?token=" + encodeURIComponent(token) +
+      "&botId=" + encodeURIComponent(botId) +
+      "&next=app";
+
+    window.location.href = url;
+
+    setTimeout(() => {
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        '<p style="margin-top:16px">If the app didn’t open, install/open PX-OS first.</p>' +
+        '<a href="' + url + '">Open PX-OS</a>'
+      );
+    }, 900);
+  }
+
+  // call bounceToApp(token, botId) after login completes
+</script>
+
 </body>
 </html>
