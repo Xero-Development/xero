@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Local stats polling (schema: payload.stats.*)
-  const STATS_URL = "http://127.0.0.1:17361/v1/stats";
+  const STATS_URL = "http://localhost:17361/v1/stats";
   const fmtUptime = (sec) => {
     const n = Number(sec); if (!Number.isFinite(n)) return String(sec ?? "--");
     const s = Math.max(0, Math.floor(n)); const h = Math.floor(s / 3600); const m = Math.floor((s % 3600) / 60); const r = s % 60;
