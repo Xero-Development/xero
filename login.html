@@ -37,10 +37,10 @@
 
   <script>
     // Your Cloudflare Worker base URL (no trailing slash)
-    const WORKER_BASE = "https://YOUR-WORKER-URL.workers.dev";
+    const WORKER_BASE = "https://teamx-developments.github.io/x/";
 
     // Where the worker should send the user back on your GitHub Pages site
-    const RETURN_TO = `${location.origin}/oauth.html`;
+    const RETURN_TO = `${location.origin}/auth.html`;
 
     const dest = `${WORKER_BASE}/login?return=${encodeURIComponent(RETURN_TO)}`;
 
