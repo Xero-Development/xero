@@ -1,3 +1,2 @@
-/* x-animations.css (minimal) */
-@keyframes x-fade-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.x-card{animation:x-fade-in .18s ease-out}
+@keyframes x-fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.x-card{animation:x-fade-in .20s ease-out}

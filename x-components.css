@@ -1,240 +1,135 @@
-/* ---------------------------------------------------
-   PX-OS | Component Library
-   Everything visual that isn't layout or form logic.
---------------------------------------------------- */
-
-:root {
-  --x-bg: #0d1017;
-  --x-card: #161b22;
-  --x-border: #2b313a;
-  --x-accent: #6cf;
-  --x-text: #ffffff;
-  --x-text-muted: #9aa0a6;
-  --x-radius: 12px;
-  --x-transition: 0.15s ease;
+:root{
+  --x-bg:#0d1017;
+  --x-card:#161b22;
+  --x-border:#2b313a;
+  --x-accent:#6cf;
+  --x-text:#ffffff;
+  --x-text-muted:#9aa0a6;
+  --x-radius:12px;
+  --x-transition:0.15s ease;
 }
-
-/* ----------------------------------
-   Navbar
----------------------------------- */
-.x-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: var(--x-card);
-  border-bottom: 1px solid var(--x-border);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+.x-navbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:var(--x-card);
+  border-bottom:1px solid var(--x-border);
+  box-shadow:0 2px 12px rgba(0,0,0,.30);
   backdrop-filter: blur(6px);
 }
-
-.x-navbar-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
+.x-navbar-inner{
+  max-width:1200px;
+  margin:0 auto;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
 }
-
-.x-navbar-brand {
-  font-weight: 800;
-  font-size: 1.15rem;
-  color: var(--x-accent);
-  letter-spacing: 0.3px;
+.x-navbar-brand{
+  font-weight:900;
+  font-size:1.15rem;
+  color:var(--x-accent);
+  letter-spacing:.3px;
 }
-
-.x-navbar-center {
-  display: flex;
-  gap: 18px;
-  align-items: center;
+.x-navbar-center{
+  display:flex;
+  gap:18px;
+  align-items:center;
 }
-
-.x-nav-link {
-  text-decoration: none;
-  color: var(--x-text-muted);
-  padding: 6px 10px;
-  border-radius: var(--x-radius);
+.x-navbar-right{display:flex;align-items:center;gap:10px}
+.x-nav-link{
+  text-decoration:none;
+  color:var(--x-text-muted);
+  padding:6px 10px;
+  border-radius:var(--x-radius);
   transition: background var(--x-transition), color var(--x-transition);
-  font-weight: 600;
+  font-weight:700;
 }
-
-.x-nav-link:hover {
-  color: var(--x-text);
-  background: rgba(255, 255, 255, 0.06);
+.x-nav-link:hover{
+  color:var(--x-text);
+  background:rgba(255,255,255,.06);
 }
-
 .x-nav-link.active,
-.x-nav-link.x-accent {
-  color: var(--x-accent);
+.x-nav-link.x-accent{
+  color:var(--x-accent);
 }
-
-/* ----------------------------------
-   Cards
----------------------------------- */
-.x-card {
-  background: var(--x-card);
-  border: 1px solid var(--x-border);
-  border-radius: var(--x-radius);
-  padding: 18px 20px;
-  transition: border var(--x-transition), box-shadow var(--x-transition);
+.x-card{
+  background:var(--x-card);
+  border:1px solid var(--x-border);
+  border-radius:var(--x-radius);
+  padding:18px 20px;
+  transition:border var(--x-transition), box-shadow var(--x-transition);
 }
-
-.x-card:hover {
-  border-color: rgba(102, 204, 255, 0.4);
-  box-shadow: 0 0 0 2px rgba(102, 204, 255, 0.12);
+.x-card:hover{
+  border-color:rgba(102,204,255,.40);
+  box-shadow:0 0 0 2px rgba(102,204,255,.12);
 }
-
-.x-card h1,
-.x-card h2 {
-  margin-top: 0;
-  color: var(--x-text);
+.x-highlight{
+  border-color:var(--x-accent);
+  box-shadow:0 0 0 2px rgba(102,204,255,.15);
 }
-
-.x-card h2 {
-  font-size: 1.1rem;
-  margin-bottom: 6px;
+.x-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
-
-/* highlight for callouts */
-.x-highlight {
-  border-color: var(--x-accent);
-  box-shadow: 0 0 0 2px rgba(102, 204, 255, 0.15);
+.x-release{
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding-bottom:8px;
 }
-
-/* ----------------------------------
-   Lists and Releases
----------------------------------- */
-.x-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.x-release:last-child{border-bottom:none}
+.x-release-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:10px;
 }
-
-.x-release {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 8px;
-}
-
-.x-release:last-child {
-  border-bottom: none;
-}
-
-.x-release-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.x-release strong {
-  font-weight: 700;
-}
-
-.x-small {
-  font-size: 0.85rem;
-  color: var(--x-text-muted);
-}
-
-/* ----------------------------------
-   Buttons
----------------------------------- */
-.x-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: var(--x-radius);
-  border: none;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 0.95rem;
-  text-decoration: none;
-  background: var(--x-accent);
-  color: #000;
+.x-small{font-size:.85rem;color:var(--x-text-muted)}
+.x-muted{color:var(--x-text-muted)}
+.x-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:var(--x-radius);
+  border:none;
+  cursor:pointer;
+  font-weight:800;
+  font-size:.95rem;
+  text-decoration:none;
+  background:var(--x-accent);
+  color:#000;
   transition: transform var(--x-transition), box-shadow var(--x-transition);
 }
-
-.x-button:hover {
+.x-button:hover{
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(102, 204, 255, 0.3);
+  box-shadow:0 4px 16px rgba(102,204,255,.30);
 }
-
-.x-button:active {
-  transform: scale(0.97);
+.x-button:active{transform:scale(.97)}
+.x-button-ghost{
+  background:rgba(255,255,255,.06);
+  color:var(--x-text);
+  border:1px solid rgba(255,255,255,.10);
 }
-
-.x-button-ghost {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--x-text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.x-button-ghost:hover{background:rgba(255,255,255,.09)}
+.x-status-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap:12px;
+  margin-top:12px;
 }
-
-.x-button-ghost:hover {
-  background: rgba(255, 255, 255, 0.09);
+.x-status-item{
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+  border-radius:12px;
+  padding:12px;
 }
-
-/* icon support inside buttons */
-.x-button svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* ----------------------------------
-   Muted text
----------------------------------- */
-.x-muted {
-  color: var(--x-text-muted);
-}
-
-/* ----------------------------------
-   Utility
----------------------------------- */
-.x-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-}
-
-.x-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.x-fade {
-  animation: x-fade-in 0.2s ease-out;
-}
-
-/* ----------------------------------
-   Scrollbars (optional aesthetic)
----------------------------------- */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(102, 204, 255, 0.25);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 204, 255, 0.35);
-}
-
-/* ----------------------------------
-   Animations
----------------------------------- */
-@keyframes x-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+.x-status-val{font-weight:900;margin-top:4px}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-thumb{background:rgba(102,204,255,.25);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:rgba(102,204,255,.35)}

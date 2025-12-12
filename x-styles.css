@@ -5,6 +5,7 @@
   --x-text:#ffffff;
   --x-text-muted:#9aa0a6;
   --x-accent:#6cf;
+  --x-radius:12px;
 }
 html,body{height:100%}
 body.x-app{
