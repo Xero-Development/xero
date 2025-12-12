@@ -146,3 +146,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       .replaceAll("'", "&#39;");
   }
 });
+// OS sidebar view switching + collapse
+document.addEventListener("DOMContentLoaded", () => {
+  const os = document.querySelector(".x-os");
+  const collapseBtn = document.getElementById("collapseSide");
+  const items = document.querySelectorAll(".x-os-item");
+  const views = document.querySelectorAll(".x-os-view");
+
+  items.forEach(btn => {
+    btn.addEventListener("click", () => {
+      items.forEach(b => b.classList.remove("active"));
+      views.forEach(v => v.classList.remove("active"));
+
+      btn.classList.add("active");
+      const view = document.getElementById(btn.dataset.view);
+      if (view) view.classList.add("active");
+    });
+  });
+
+  collapseBtn?.addEventListener("click", () => {
+    os.classList.toggle("collapsed");
+    collapseBtn.textContent = os.classList.contains("collapsed") ? "Expand" : "Collapse";
+  });
+});
