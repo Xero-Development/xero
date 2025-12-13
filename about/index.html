@@ -4,9 +4,10 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>About | The X Project</title>
-  <link rel="stylesheet" href="../assets/styles.css"/>
-  <script src="../assets/config.js"></script>
-  <script src="../assets/app.js"></script>
+  <link rel="stylesheet" href="/x/assets/styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/x/assets/config.js"></script>
+  <script src="/x/assets/app.js"></script>
 </head>
 <body>
   <div class="wrap">
@@ -15,42 +16,29 @@
         <div class="logo">X</div>
         <div>
           <div class="name">The X Project</div>
-          <div class="tag">About page. Less mystery, more context.</div>
+          <div class="tag">About page. Context for the mess.</div>
         </div>
       </div>
       <div class="nav">
-        <a class="btn ghost" href="../">Home</a>
-        <a class="btn ghost" href="../login/" id="navLogin">Login</a>
+        <a class="btn ghost" href="/x/">Home</a>
+        <a class="btn ghost" href="/x/dashboard/" id="navDash" style="display:none;">Dashboard</a>
+        <a class="btn ghost" href="#" id="navLogin">Login</a>
         <a class="btn ghost" href="#" id="navLogout" style="display:none;">Logout</a>
       </div>
     </div>
 
     <div class="card">
       <h1>About</h1>
-      <p>The X Project is a system app + updater pipeline. The goal is boring: ship updates and keep installs sane.</p>
-      <p class="muted">This site is static and hosted on GitHub Pages, so it stays simple.</p>
-      <div class="row">
-        <a class="btn ghost" href="../">Back to Releases</a>
-      </div>
+      <p>The X Project is a system app + updater pipeline. Ship updates, install updates, repeat.</p>
+      <p class="muted">Static GitHub Pages site, real Discord login via Supabase Auth.</p>
     </div>
 
     <div class="footer">© 2025 The X Project.</div>
   </div>
 
   <script>
-    (async () => {
-      const navLogin = document.getElementById("navLogin");
-      const navLogout = document.getElementById("navLogout");
-      const me = await XP.fetchMe().catch(() => null);
-      if(me){
-        navLogin.style.display = "none";
-        navLogout.style.display = "inline-flex";
-      } else {
-        navLogin.style.display = "inline-flex";
-        navLogout.style.display = "none";
-      }
-      navLogout.addEventListener("click", (e)=>{ e.preventDefault(); XP.clearToken(); location.href="../"; });
-    })();
+    document.getElementById("navLogin").onclick = function(e){ e.preventDefault(); XP.signInDiscord(); };
+    XP.renderAuthBox();
   </script>
 </body>
 </html>

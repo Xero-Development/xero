@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard | The X Project</title>
+  <link rel="stylesheet" href="/x/assets/styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/x/assets/config.js"></script>
+  <script src="/x/assets/app.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">X</div>
+        <div>
+          <div class="name">The X Project</div>
+          <div class="tag">Dashboard (post-login landing).</div>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="btn ghost" href="/x/">Home</a>
+        <a class="btn ghost" href="/x/about/">About</a>
+        <a class="btn ghost" href="#" id="navLogout">Logout</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h1>Dashboard</h1>
+      <div id="dashUser" class="muted">Loading session…</div>
+
+      <div class="row" style="margin-top:12px;">
+        <a class="btn" href="#" id="btnDiscord">Login with Discord</a>
+        <a class="btn ghost" href="#" id="btnLogout" style="display:none;">Logout</a>
+      </div>
+
+      <hr/>
+      <h2>Session JSON</h2>
+      <pre id="sessionJson" class="code" style="white-space:pre-wrap;"></pre>
+    </div>
+
+    <div class="footer">© 2025 The X Project.</div>
+  </div>
+
+  <script>
+    var dashUser = document.getElementById("dashUser");
+    var sessionJson = document.getElementById("sessionJson");
+
+    async function show(){
+      var sess = await XP.getSession();
+      if(sess && sess.user){
+        var u = sess.user;
+        dashUser.textContent = "Logged in as: " + (u.user_metadata && (u.user_metadata.preferred_username || u.user_metadata.full_name) || u.email || u.id);
+        sessionJson.textContent = JSON.stringify(sess, null, 2);
+        document.getElementById("btnLogout").style.display = "inline-flex";
+      } else {
+        dashUser.textContent = "Not logged in.";
+        sessionJson.textContent = "";
+      }
+      XP.renderAuthBox();
+    }
+
+    document.getElementById("btnDiscord").onclick = async function(e){ e.preventDefault(); await XP.signInDiscord(); };
+    document.getElementById("navLogout").onclick = async function(e){ e.preventDefault(); await XP.signOut(); location.href = XP.rel("/"); };
+    document.getElementById("btnLogout").onclick = async function(e){ e.preventDefault(); await XP.signOut(); location.reload(); };
+
+    show();
+  </script>
+</body>
+</html>

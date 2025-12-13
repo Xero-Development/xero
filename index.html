@@ -4,9 +4,10 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>The X Project</title>
-  <link rel="stylesheet" href="assets/styles.css"/>
-  <script src="assets/config.js"></script>
-  <script src="assets/app.js"></script>
+  <link rel="stylesheet" href="/x/assets/styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/x/assets/config.js"></script>
+  <script src="/x/assets/app.js"></script>
 </head>
 <body>
   <div class="wrap">
@@ -15,12 +16,13 @@
         <div class="logo">X</div>
         <div>
           <div class="name">The X Project</div>
-          <div class="tag">Releases + About + Discord login, hosted on GitHub Pages.</div>
+          <div class="tag">Working Discord login (Supabase) + dashboard redirect.</div>
         </div>
       </div>
       <div class="nav">
-        <a class="btn ghost" href="about/">About</a>
-        <a class="btn ghost" href="login/" id="navLogin">Login</a>
+        <a class="btn ghost" href="/x/about/">About</a>
+        <a class="btn ghost" href="/x/dashboard/" id="navDash" style="display:none;">Dashboard</a>
+        <a class="btn ghost" href="#" id="navLogin">Login</a>
         <a class="btn ghost" href="#" id="navLogout" style="display:none;">Logout</a>
       </div>
     </div>
@@ -37,37 +39,38 @@
       <div class="card">
         <h2>Account</h2>
         <div id="meBox" class="muted">Loading…</div>
+
         <div class="row" style="margin-top:12px;">
           <a class="btn" href="#" id="btnDiscord">Login with Discord</a>
-          <a class="btn ghost" href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord App</a>
+          <a class="btn ghost" href="/x/dashboard/">Open Dashboard</a>
+          <a class="btn ghost" href="#" id="btnLogout" style="display:none;">Logout</a>
         </div>
-        <p class="muted" style="margin-top:10px;">
-          Redirect URI: <span class="code" id="redir"></span>
-        </p>
-        <p class="muted">
-          Static hosting uses implicit grant (token in URL fragment). If you insist on response_type=code, you need a backend to call the token endpoint.
-        </p>
+
+        <hr/>
+
+        <p class="muted">Your Discord authorize URL (reference):</p>
+        <div class="code" id="authUrl"></div>
       </div>
     </div>
 
-    <div class="footer">© 2025 The X Project. Minimalism by necessity.</div>
+    <div class="footer">© 2025 The X Project. Humans asked for auth, so here we are.</div>
   </div>
 
-  <!-- Embedded fallback releases (keeps “embed releases in index.html” true) -->
   <script id="embedded-releases" type="application/json">[
-[
-  {"tag":"1.5.3","title":"1.5.3","published":"2025-12-13 01:30","notes":"Add progress.json file","assetsCount":3},
-  {"tag":"1.5.2","title":"1.5.2","published":"2025-12-12 01:39","notes":"-Rewrite","assetsCount":3,"changelog":"https://github.com/TeamX-Developments/The-X-Project/commits/1.5.2"},
-  {"tag":"1.5.1","title":"1.5.1","published":"2025-12-10 22:29","assetsCount":3,"changelog":"https://github.com/Xero-Development/The-X-Project/commits/v1.5-update-patch"},
-  {"tag":"v1.5-Update","title":"v1.5 - Enhancements","published":"2025-12-10 04:47","assetsCount":3,"changelog":"https://github.com/Xero-Development/The-X-Project/commits/v1.5-Update"},
-  {"tag":"v1.0-INIT","title":"v1.0 Inital Release","published":"2025-12-09 04:20","assetsCount":3,"changelog":"https://github.com/Xero-Development/The-X-Project/changelog.md"}
-]
-</script>
+  {
+    "tag": "embedded",
+    "date": "2025-12-13",
+    "title": "Embedded fallback",
+    "notes": "This is embedded in index.html. Page also loads live releases from GitHub.",
+    "assets": []
+  }
+]</script>
 
   <script>
-    document.getElementById("redir").textContent = XP.redirectUri();
+    document.getElementById("navLogin").onclick = function(e){ e.preventDefault(); document.getElementById("btnDiscord").click(); };
+    document.getElementById("authUrl").textContent = XP.discordAuthorizeUrl();
     XP.loadReleases();
-    XP.wireAuthUI();
+    XP.renderAuthBox();
   </script>
 </body>
 </html>
