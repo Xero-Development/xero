@@ -282,12 +282,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ----------------------------
   // Local stats polling (your API on 3301 /v2/stats)
   // ----------------------------
-  const STATS_URLS = [
-    "http://127.0.0.1:3301/v2/stats",
-    "http://localhost:3301/v2/stats",
-    "http://127.0.0.1:3300/v2/stats",
-    "http://localhost:3300/v2/stats"
-  ];
+  const STATS_URLS = "http://localhost:3301/v2/stats",
+ 
 
   // CPU estimate (only works if renderer has node access; otherwise shows --)
   let lastCpu = null;
