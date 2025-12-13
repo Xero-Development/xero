@@ -251,9 +251,9 @@ const statsRaw   = el("statsRaw");
 
 const STATS_URLS = [
   "http://127.0.0.1:17361/v1/stats",
-  "http://localhost:17361/v1/stats",
+  "http://localhost:3301/v2/stats",
   "https://127.0.0.1:17361/v1/stats",
-  "https://localhost:17361/v1/stats",
+  "https://localhost:3301/v2/stats",
 ];
 
 // For CPU% estimate in Electron (between calls)
