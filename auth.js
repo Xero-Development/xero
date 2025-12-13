@@ -1,3 +1,4 @@
+// auth.js (Supabase email/password auth)
 document.addEventListener("DOMContentLoaded", async () => {
   const tabs = document.querySelectorAll(".x-tab");
   const loginPanel = document.getElementById("loginPanel");
@@ -16,22 +17,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     (tab === "login" ? loginPanel : registerPanel).classList.add("active");
   }
 
-  tabs.forEach(btn => btn.addEventListener("click", () => show(btn.dataset.tab)));
+  tabs.forEach(btn => {
+    btn.addEventListener("click", () => show(btn.dataset.tab));
+  });
 
+  // If already signed in, go dashboard
   try {
     const { data: { user } } = await window.sb.auth.getUser();
     if (user) location.replace("./dashboard.html");
-  } catch {}
+  } catch (_) {}
 
   loginPanel.addEventListener("submit", async (e) => {
     e.preventDefault();
     loginStatus.textContent = "Signing in…";
+
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPass").value;
 
     const { error } = await window.sb.auth.signInWithPassword({ email, password });
-    if (error) return (loginStatus.textContent = error.message);
 
+    if (error) {
+      loginStatus.textContent = error.message;
+      return;
+    }
     loginStatus.textContent = "Signed in. Redirecting…";
     location.replace("./dashboard.html");
   });
@@ -45,8 +53,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const pass1 = document.getElementById("regPass").value;
     const pass2 = document.getElementById("regPass2").value;
 
-    if (pass1.length < 8) return (regStatus.textContent = "Password must be at least 8 characters.");
-    if (pass1 !== pass2) return (regStatus.textContent = "Passwords do not match.");
+    if (pass1.length < 8) {
+      regStatus.textContent = "Password must be at least 8 characters.";
+      return;
+    }
+    if (pass1 !== pass2) {
+      regStatus.textContent = "Passwords do not match.";
+      return;
+    }
 
     const { data, error } = await window.sb.auth.signUp({
       email,
@@ -54,7 +68,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       options: { data: { username } }
     });
 
-    if (error) return (regStatus.textContent = error.message);
+    if (error) {
+      regStatus.textContent = error.message;
+      return;
+    }
 
     if (!data.session) {
       regStatus.textContent = "Account created. Check your email to confirm, then log in.";

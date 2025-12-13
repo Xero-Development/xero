@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PX-OS | Auth</title>
+
   <link rel="stylesheet" href="./x-layout.css" />
   <link rel="stylesheet" href="./x-components.css" />
   <link rel="stylesheet" href="./x-forms.css" />
@@ -11,6 +12,7 @@
   <link rel="stylesheet" href="./x-animations.css" />
   <link rel="stylesheet" href="./x-styles.css" />
 </head>
+
 <body class="x-app">
 <nav class="x-navbar">
   <div class="x-navbar-inner">
@@ -26,8 +28,9 @@
     </div>
   </div>
 </nav>
+
 <main class="x-container">
-  <section class="x-card">
+  <section class="x-card x-auth-wrap">
     <h1>Account</h1>
     <p class="x-muted">Login or create an account (Supabase Auth).</p>
 
@@ -40,6 +43,7 @@
       <label class="x-label">Email
         <input class="x-input" type="email" id="loginEmail" autocomplete="email" required />
       </label>
+
       <label class="x-label">Password
         <input class="x-input" type="password" id="loginPass" autocomplete="current-password" required />
       </label>
@@ -56,12 +60,15 @@
       <label class="x-label">Username
         <input class="x-input" type="text" id="regUser" autocomplete="username" required />
       </label>
+
       <label class="x-label">Email
         <input class="x-input" type="email" id="regEmail" autocomplete="email" required />
       </label>
+
       <label class="x-label">Password
         <input class="x-input" type="password" id="regPass" autocomplete="new-password" required />
       </label>
+
       <label class="x-label">Confirm Password
         <input class="x-input" type="password" id="regPass2" autocomplete="new-password" required />
       </label>
@@ -73,11 +80,36 @@
 
       <div class="x-muted" id="regStatus" style="margin-top:10px;"></div>
     </form>
+
+    <p class="x-muted" style="margin-top:14px;">
+      Tip: set your Supabase Site URL + Redirect URLs to your GitHub Pages URL in Supabase Auth settings.
+    </p>
   </section>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-client.js"></script>
 <script src="./auth.js" defer></script>
+  <script>
+  function bounceToApp(token, botId) {
+    const url =
+      "pxos://auth?token=" + encodeURIComponent(token) +
+      "&botId=" + encodeURIComponent(botId) +
+      "&next=app";
+
+    window.location.href = url;
+
+    setTimeout(() => {
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        '<p style="margin-top:16px">If the app didn’t open, install/open PX-OS first.</p>' +
+        '<a href="' + url + '">Open PX-OS</a>'
+      );
+    }, 900);
+  }
+
+  // call bounceToApp(token, botId) after login completes
+</script>
+
 </body>
 </html>

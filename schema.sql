@@ -1,5 +1,7 @@
 -- Supabase schema for PX-OS site
+-- Run this in Supabase SQL editor.
 
+-- 1) Profiles table (links auth.users -> public profile)
 create table if not exists public.profiles (
   id uuid not null references auth.users on delete cascade,
   username text unique,
@@ -28,6 +30,7 @@ to authenticated
 using (auth.uid() is not null and auth.uid() = id)
 with check (auth.uid() is not null and auth.uid() = id);
 
+-- Trigger: auto create profile row on signup
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -46,6 +49,7 @@ create trigger on_auth_user_created
 after insert on auth.users
 for each row execute procedure public.handle_new_user();
 
+-- 2) Staff applications table
 create table if not exists public.staff_applications (
   id bigserial primary key,
   user_id uuid not null references auth.users on delete cascade,
@@ -61,10 +65,10 @@ create policy "applications_insert_own"
 on public.staff_applications
 for insert
 to authenticated
-with check (auth.uid() = user_id);
+with check (auth.uid() is not null and auth.uid() = user_id);
 
 create policy "applications_select_own"
 on public.staff_applications
 for select
 to authenticated
-using (auth.uid() = user_id);
+using (auth.uid() is not null and auth.uid() = user_id);

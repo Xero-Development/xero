@@ -31,7 +31,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       .from("staff_applications")
       .insert([{ user_id: user.id, role, message }]);
 
-    if (error) return (status.textContent = error.message);
+    if (error) {
+      status.textContent = error.message;
+      return;
+    }
 
     status.textContent = "Application submitted. If you're accepted, you'll be contacted.";
     form.reset();
