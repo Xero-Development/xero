@@ -195,7 +195,7 @@
     if(!owner || !repo) return;
 
     try{
-      const api = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/releases`;
+      const api = `https://github.com/TeamX-Developments/The-X-Project/releases`;
       const r = await fetch(api, { headers: { "Accept": "application/vnd.github+json" }});
       if(!r.ok) return;
       const j = await r.json();

@@ -55,14 +55,14 @@
 
   <!-- Embedded fallback releases (keeps “embed releases in index.html” true) -->
   <script id="embedded-releases" type="application/json">[
-  {
-    "tag": "v0.0.0",
-    "date": "2025-12-13",
-    "title": "Embedded fallback",
-    "notes": "This is embedded in index.html. The site also tries to load live releases from GitHub.",
-    "assets": []
-  }
-]</script>
+[
+  {"tag":"1.5.3","title":"1.5.3","published":"2025-12-13 01:30","notes":"Add progress.json file","assetsCount":3},
+  {"tag":"1.5.2","title":"1.5.2","published":"2025-12-12 01:39","notes":"-Rewrite","assetsCount":3,"changelog":"https://github.com/TeamX-Developments/The-X-Project/commits/1.5.2"},
+  {"tag":"1.5.1","title":"1.5.1","published":"2025-12-10 22:29","assetsCount":3,"changelog":"https://github.com/Xero-Development/The-X-Project/commits/v1.5-update-patch"},
+  {"tag":"v1.5-Update","title":"v1.5 - Enhancements","published":"2025-12-10 04:47","assetsCount":3,"changelog":"https://github.com/Xero-Development/The-X-Project/commits/v1.5-Update"},
+  {"tag":"v1.0-INIT","title":"v1.0 Inital Release","published":"2025-12-09 04:20","assetsCount":3,"changelog":"https://github.com/Xero-Development/The-X-Project/changelog.md"}
+]
+</script>
 
   <script>
     document.getElementById("redir").textContent = XP.redirectUri();
