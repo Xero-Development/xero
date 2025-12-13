@@ -1,27 +1,90 @@
-<!DOCTYPE html><html lang="en" class="x-app"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>PX-OS | Home</title>
-  <link rel="stylesheet" href="./x-layout.css" />
-  <link rel="stylesheet" href="./x-components.css" />
-  <link rel="stylesheet" href="./x-forms.css" />
-  <link rel="stylesheet" href="./x-icons.css" />
-  <link rel="stylesheet" href="./x-animations.css" />
-  <link rel="stylesheet" href="./x-styles.css" /></head><body class="x-app"><nav class="x-navbar">
-  <div class="x-navbar-inner">
-    <div class="x-navbar-left"><span class="x-navbar-brand">Project X</span></div>
-    <div class="x-navbar-center">
-      <a class="x-nav-link" href="./index.html">Home</a>
-      <a class="x-nav-link" href="./about.html">About</a>
-      <a class="x-nav-link" href="./docs.html">Docs</a>
-      <a class="x-nav-link" href="./support.html">Support</a>
-      <a class="x-nav-link x-accent" href="./apply.html">Apply</a>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>The X Project</title>
+  <link rel="stylesheet" href="assets/styles.css"/>
+  <script src="assets/config.js"></script>
+  <script src="assets/app.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">X</div>
+        <div>
+          <div class="name">The X Project</div>
+          <div class="tag">GitHub-hosted site: releases embedded in <span class="code">index.html</span>, plus Discord login.</div>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="btn ghost" href="about/">About</a>
+        <a class="btn ghost" href="login/" id="navLogin">Login</a>
+        <a class="btn ghost" href="#" id="navLogout" style="display:none;">Logout</a>
+      </div>
     </div>
+
+    <div class="grid">
+      <div class="card">
+        <h1>Releases</h1>
+        <p class="muted">Embedded. No API calls. No excuses.</p>
+        <div id="releaseList" class="row" style="flex-direction:column; gap:12px; margin-top:14px;"></div>
+      </div>
+
+      <div class="card">
+        <h2>Account</h2>
+        <div id="meBox" class="muted">Loading…</div>
+        <div class="row" style="margin-top:12px;">
+          <a class="btn" href="#" id="btnDiscord">Login with Discord</a>
+          <a class="btn ghost" href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord App</a>
+        </div>
+        <p class="muted" style="margin-top:10px;">
+          Static hosting means no server-side token exchange. This uses the OAuth2 implicit flow.
+        </p>
+        <p class="muted">
+          Redirect URI this page expects: <span class="code" id="redir"></span>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">© 2025 The X Project. Some assembly required.</div>
   </div>
-</nav>
-<main class="x-container">
-<section class="x-card"><h1>Project X</h1><p class="x-muted">PX-OS is actively developed and shipping updates. Latest releases are pulled directly from GitHub.</p>
-<div class="x-row" style="margin-top:12px;"><a class="x-button x-button-ghost" href="./auth.html">Login / Register</a><a class="x-button x-button-ghost" href="./dashboard.html">Dashboard</a></div></section>
-<section class="x-card"><h2>Download</h2><p id="downloadText" class="x-muted">Fetching latest release…</p>
-<div class="x-row" style="margin-top:10px;"><a id="downloadBtn" class="x-button" href="#" target="_blank" rel="noopener" style="display:none;">Download Latest</a>
-<a class="x-button x-button-ghost" href="https://github.com/TeamX-Developments/The-X-Project/releases" target="_blank" rel="noopener">View all releases</a></div></section>
-<section class="x-card"><h2>Latest Releases</h2><ul id="releases" class="x-list"></ul></section>
-<section class="x-card x-highlight"><h2>We’re hiring staff!</h2><p class="x-muted">Want to help build PX-OS? Submit an application now at <a href="./apply.html">Apply</a>.</p></section>
-</main><script src="./x-main.js" defer></script></body></html>
+
+  <script id="embedded-releases" type="application/json">[
+  {
+    "tag": "v1.2.0",
+    "date": "2025-12-12",
+    "title": "Updater pipeline polish",
+    "notes": "- Update feed + creator tooling\n- Installer chunking improvements\n- Auth flow refinements",
+    "assets": [
+      {
+        "name": "TheXProject-Setup-1.2.0.exe",
+        "url": "#"
+      },
+      {
+        "name": "TheXProject-1.2.0.zip",
+        "url": "#"
+      }
+    ]
+  },
+  {
+    "tag": "v1.1.0",
+    "date": "2025-11-30",
+    "title": "Discord login + dashboard",
+    "notes": "- Discord login\n- Session/user display",
+    "assets": [
+      {
+        "name": "TheXProject-1.1.0.zip",
+        "url": "#"
+      }
+    ]
+  }
+]</script>
+  <script>
+    XP.renderReleases();
+    XP.wireAuthUI();
+    document.getElementById("redir").textContent = XP.redirectUri();
+  </script>
+</body>
+</html>

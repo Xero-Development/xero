@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Login | The X Project</title>
+  <link rel="stylesheet" href="../assets/styles.css"/>
+  <script src="../assets/config.js"></script>
+  <script src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">X</div>
+        <div>
+          <div class="name">The X Project</div>
+          <div class="tag">Login page. One button. Maximum drama.</div>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="btn ghost" href="../">Home</a>
+        <a class="btn ghost" href="../about/">About</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h1>Login</h1>
+      <p class="muted">This uses Discord OAuth2 implicit flow so it can run on a static host.</p>
+      <p class="muted">Redirect URI: <span class="code" id="redir"></span></p>
+      <div class="row">
+        <a class="btn" href="#" id="go">Login with Discord</a>
+        <a class="btn ghost" href="../">Cancel</a>
+      </div>
+    </div>
+
+    <div class="footer">© 2025 The X Project.</div>
+  </div>
+
+  <script>
+    document.getElementById("redir").textContent = XP.redirectUri();
+    document.getElementById("go").addEventListener("click", (e)=>{ e.preventDefault(); location.href = XP.loginUrl(); });
+  </script>
+</body>
+</html>
